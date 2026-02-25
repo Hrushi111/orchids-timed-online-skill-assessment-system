@@ -93,7 +93,7 @@ export default function HomePage() {
             </p>
 
             {/* CTA buttons */}
-            <div style={{ display: "flex", gap: 20, flexWrap: "wrap", marginBottom: 64, justifyContent: "inherit" }}>
+            <div className="mobile-center-flex" style={{ display: "flex", gap: 20, flexWrap: "wrap", marginBottom: 64 }}>
               <Link href="/auth/register" className="btn btn-primary btn-xl" style={{ minWidth: 220 }}>
                 Get Started
               </Link>
@@ -181,11 +181,7 @@ export default function HomePage() {
               </button>
             </div>
           ) : (
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(360px, 1fr))",
-              gap: 48,
-            }}>
+            <div className="card-grid">
               {subjects.map((s, i) => {
                 const meta = SUBJECT_META[s.name] ?? { icon: "📚", color: "#4B5320", desc: "" };
                 return (
@@ -193,7 +189,7 @@ export default function HomePage() {
                     <div
                       className="card card-hover"
                       style={{
-                        padding: "36px 32px",
+                        padding: "28px",
                         height: "100%",
                         display: "flex",
                         flexDirection: "column",
@@ -297,14 +293,14 @@ export default function HomePage() {
             BOTTOM CTA 
             ══════════════════════════════════════ */}
         <section className="container section-padding">
-          <div style={{
-            borderRadius: 24, padding: "60px 48px",
+          <div className="card-cta mobile-stack mobile-text-center" style={{
+            borderRadius: 24,
             background: "var(--primary)",
             display: "grid", gridTemplateColumns: "1fr auto",
             alignItems: "center", gap: 40,
             position: "relative", overflow: "hidden",
             boxShadow: "var(--shadow-lg)"
-          }} className="mobile-stack mobile-text-center">
+          }}>
             <div>
               <h2 style={{ fontSize: "clamp(28px, 4vw, 36px)", fontWeight: 900, fontFamily: "Poppins", marginBottom: 12, color: "white" }}>
                 Ready to be Unstoppable?

@@ -1593,7 +1593,7 @@ a {
   .mobile-stack {
     display: flex !important;
     flex-direction: column !important;
-    gap: 20px !important;
+    gap: 32px !important;
   }
 
   .mobile-hide {
@@ -1601,10 +1601,39 @@ a {
   }
 
   .mobile-text-center {
-    text-align: center;
+    text-align: center !important;
+  }
+
+  .mobile-center-flex {
+    justify-content: center !important;
   }
 
   main {
-    padding: 20px 16px !important;
+    padding: 20px 0 !important;
+  }
+}
+
+.card-cta {
+  padding: 60px 48px;
+}
+
+@media (max-width: 768px) {
+  .card-cta {
+    padding: 40px 24px !important;
+    border-radius: 16px !important;
+  }
+}
+
+/* Card Grid Utility */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 32px;
+}
+
+@media (max-width: 768px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 }
