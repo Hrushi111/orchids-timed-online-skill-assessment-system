@@ -71,14 +71,14 @@ export default function HomePage() {
           }} className="mobile-text-center">
             {/* Status pill */}
             <div style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              padding: "6px 16px", borderRadius: 40, marginBottom: 28,
+              display: "inline-flex", alignItems: "center", gap: 10,
+              height: 32, padding: "0 16px", borderRadius: 40, marginBottom: 28,
               background: "#F0EEE0",
               border: "1px solid var(--border)",
-              fontSize: 12, fontWeight: 600, letterSpacing: "0.1em",
+              fontSize: 12, fontWeight: 700, letterSpacing: "0.1em",
               color: "var(--primary)", textTransform: "uppercase",
             }}>
-              <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#22c55e", animation: "blink 1.5s ease-in-out infinite" }} />
+              <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e", animation: "blink 1.5s ease-in-out infinite" }} />
               Academy Protocol engaged
             </div>
 
@@ -161,7 +161,7 @@ export default function HomePage() {
           {/* Section header */}
           <div style={{ marginBottom: 80 }} className="mobile-text-center">
             <div style={{
-              display: "inline-block", padding: "6px 16px", borderRadius: 20, marginBottom: 14,
+              display: "inline-flex", alignItems: "center", height: 32, padding: "0 16px", borderRadius: 20, marginBottom: 14,
               background: "#F0EEE0", border: "1px solid var(--border)",
               fontSize: 12, fontWeight: 700, color: "var(--primary)", textTransform: "uppercase", letterSpacing: "0.12em",
             }}>
@@ -293,7 +293,7 @@ export default function HomePage() {
             {/* RIGHT — Title + CTA */}
             <div className="mobile-text-center">
               <div style={{
-                display: "inline-block", padding: "6px 16px", borderRadius: 20, marginBottom: 16,
+                display: "inline-flex", alignItems: "center", height: 32, padding: "0 16px", borderRadius: 20, marginBottom: 16,
                 background: "#F0EEE0", border: "1px solid var(--border)",
                 fontSize: 12, fontWeight: 700, color: "var(--primary)", textTransform: "uppercase", letterSpacing: "0.12em",
               }}>
