@@ -921,11 +921,11 @@ a {
    NAVBAR
    ============================================ */
 .navbar {
-  background: #111826;
-  border-bottom: 1px solid rgba(131, 226, 246, 0.15);
-  position: sticky;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  position: fixed;
   top: 0;
-  z-index: 100;
+  z-index: 9999;
   height: var(--navbar-h);
   display: flex;
   align-items: center;

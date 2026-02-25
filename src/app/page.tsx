@@ -50,7 +50,7 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-      <main style={{ minHeight: "calc(100vh - 68px)", overflowX: "hidden" }}>
+      <main style={{ paddingTop: "var(--navbar-h)", minHeight: "100vh", overflowX: "hidden" }}>
 
         {/* ══════════════════════════════════════
             HERO — Clean Olive Layout

@@ -34,9 +34,10 @@ export default function Navbar() {
 
   return (
     <nav className="navbar" style={{
-      background: scrolled ? "rgba(249, 247, 232, 0.98)" : "transparent",
-      transition: "background 0.3s ease, border-bottom 0.3s ease",
+      background: "var(--bg)",
+      transition: "box-shadow 0.3s ease, border-bottom 0.3s ease",
       borderBottom: scrolled ? "1px solid var(--border)" : "1px solid transparent",
+      boxShadow: scrolled ? "var(--shadow-sm)" : "none",
       height: "var(--navbar-h)",
       display: "flex",
       alignItems: "center",
@@ -45,7 +46,7 @@ export default function Navbar() {
       top: 0,
       left: 0,
       right: 0,
-      zIndex: 1000,
+      zIndex: 9999,
     }}>
       {/* Logo */}
       <Link href="/" style={{
