@@ -289,7 +289,7 @@ export default function DumpQuestionsPage() {
                                     Choose which subject and topic this question belongs to.
                                 </p>
 
-                                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                                <div className="mobile-stack" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
                                     <div className="form-group">
                                         <label className="label">Subject *</label>
                                         <select className="select" value={form.subject_id}
@@ -379,7 +379,7 @@ export default function DumpQuestionsPage() {
                                 <p style={{ color: "var(--text-muted)", fontSize: 13, marginBottom: 24 }}>
                                     Provide four choices and mark the correct one.
                                 </p>
-                                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                                <div className="mobile-stack" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
                                     {(["A", "B", "C", "D"] as const).map(opt => {
                                         const key = `option_${opt.toLowerCase()}` as keyof typeof form;
                                         const isCorrect = form.correct_answer === opt;
@@ -563,7 +563,7 @@ export default function DumpQuestionsPage() {
                                 </code>
                             </div>
 
-                            <div style={{ marginTop: 18, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                            <div className="mobile-stack" style={{ marginTop: 18, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                                 {[
                                     { col: "subject", desc: "Must match exactly: Java, SQL, Angular, Python, etc." },
                                     { col: "topic", desc: "Optional. Leave blank if not applicable." },

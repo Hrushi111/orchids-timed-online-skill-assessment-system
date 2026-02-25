@@ -1431,6 +1431,31 @@ a {
   padding: 0 28px;
 }
 
+.mobile-only,
+.mobile-only-flex {
+  display: none !important;
+}
+
+@media (max-width: 1024px) {
+  .mobile-only {
+    display: block !important;
+  }
+
+  .mobile-only-flex {
+    display: flex !important;
+  }
+}
+
+.desktop-only {
+  display: block !important;
+}
+
+@media (max-width: 1024px) {
+  .desktop-only {
+    display: none !important;
+  }
+}
+
 .page-header {
   margin-bottom: 32px;
 }
@@ -1563,11 +1588,38 @@ a {
 /* ============================================
    RESPONSIVE
    ============================================ */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .sidebar {
-    display: none;
+    position: fixed;
+    left: -280px;
+    top: var(--navbar-h);
+    height: calc(100vh - var(--navbar-h));
+    z-index: 1000;
+    transition: left 0.3s ease;
+    box-shadow: 20px 0 30px rgba(0, 0, 0, 0.1);
+    background: var(--bg-card);
+    /* Slightly different from main bg for contrast */
   }
 
+  .sidebar-open {
+    left: 0;
+  }
+
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
   .container {
     padding: 0 16px;
   }
@@ -1575,5 +1627,23 @@ a {
   .btn-lg {
     padding: 13px 24px;
     font-size: 14px;
+  }
+
+  .mobile-stack {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+  }
+
+  .mobile-hide {
+    display: none !important;
+  }
+
+  .mobile-text-center {
+    text-align: center;
+  }
+
+  main {
+    padding: 20px 16px !important;
   }
 }

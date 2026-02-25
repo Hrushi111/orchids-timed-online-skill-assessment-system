@@ -20,7 +20,7 @@ const SUBJECT_COLORS: Record<string, string> = {
   default: "#3D550C"
 };
 
-function Sidebar() {
+function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (o: boolean) => void }) {
   const pathname = usePathname();
   const { isAdmin } = useAuth();
 
@@ -32,36 +32,43 @@ function Sidebar() {
   ];
 
   return (
-    <aside className="sidebar slide-in-left" style={{ display: "flex", flexDirection: "column" }}>
-      {/* Logo */}
-      <div style={{ padding: "8px 22px 20px" }}>
-        <Link href="/" style={{ fontSize: 18, fontWeight: 900, textDecoration: "none", color: "var(--primary)" }}>⚡ ThorPrep</Link>
-      </div>
+    <>
+      {/* Mobile Backdrop */}
+      {isOpen && <div className="sidebar-backdrop" onClick={() => setIsOpen(false)} />}
 
-      <div className="sidebar-section">Navigation</div>
-      {links.map(l => (
-        <Link
-          key={l.href}
-          href={l.href}
-          className={`sidebar-item ${pathname === l.href ? "active" : ""}`}
-        >
-          <span style={{ fontSize: 18 }}>{l.icon}</span>
-          {l.label}
-        </Link>
-      ))}
-
-      <div className="sidebar-section" style={{ marginTop: 20 }}>Subjects</div>
-      {["Java", "SQL", "Angular", "Aptitude", "Web Development", "Python"].map(s => (
-        <div key={s} className="sidebar-item" style={{ fontSize: 13 }}>
-          <span>{SUBJECT_ICONS[s]}</span> {s}
+      <aside className={`sidebar ${isOpen ? "sidebar-open" : ""}`} style={{ display: "flex", flexDirection: "column" }}>
+        {/* Logo */}
+        <div style={{ padding: "8px 22px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <Link href="/" style={{ fontSize: 18, fontWeight: 900, textDecoration: "none", color: "var(--primary)" }}>⚡ ThorPrep</Link>
+          <button className="mobile-only-flex" onClick={() => setIsOpen(false)} style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: 20 }}>✕</button>
         </div>
-      ))}
 
-      {/* Bottom Credit */}
-      <div style={{ marginTop: "auto", padding: "20px 22px", fontSize: 12, color: "var(--text-muted)" }}>
-        PrepMaster v2.0 © 2026
-      </div>
-    </aside>
+        <div className="sidebar-section">Navigation</div>
+        {links.map(l => (
+          <Link
+            key={l.href}
+            href={l.href}
+            onClick={() => setIsOpen(false)}
+            className={`sidebar-item ${pathname === l.href ? "active" : ""}`}
+          >
+            <span style={{ fontSize: 18 }}>{l.icon}</span>
+            {l.label}
+          </Link>
+        ))}
+
+        <div className="sidebar-section" style={{ marginTop: 20 }}>Subjects</div>
+        {["Java", "SQL", "Angular", "Aptitude", "Web Development", "Python"].map(s => (
+          <div key={s} className="sidebar-item" style={{ fontSize: 13 }}>
+            <span>{SUBJECT_ICONS[s]}</span> {s}
+          </div>
+        ))}
+
+        {/* Bottom Credit */}
+        <div style={{ marginTop: "auto", padding: "20px 22px", fontSize: 12, color: "var(--text-muted)" }}>
+          PrepMaster v2.0 © 2026
+        </div>
+      </aside>
+    </>
   );
 }
 
@@ -97,12 +104,29 @@ export default function Dashboard() {
     ? Math.max(...recentResults.map(r => Number(r.accuracy))).toFixed(1)
     : "—";
 
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const gradeColor = (acc: number) =>
     acc >= 70 ? "#10b981" : acc >= 40 ? "#f59e0b" : "#ef4444";
 
   return (
     <div style={{ display: "flex", minHeight: "calc(100vh - var(--navbar-h))", paddingTop: "var(--navbar-h)" }}>
-      <Sidebar />
+      <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+
+      {/* Mobile Toggle Button */}
+      <button
+        className="mobile-only-flex"
+        onClick={() => setSidebarOpen(true)}
+        style={{
+          position: "fixed", bottom: 20, right: 20, zIndex: 900,
+          width: 50, height: 50, borderRadius: "50%",
+          background: "var(--primary)", color: "white",
+          border: "none", boxShadow: "var(--shadow-lg)",
+          alignItems: "center", justifyContent: "center", fontSize: 24
+        }}
+      >
+        ☰
+      </button>
 
       {/* Main Content */}
       <main style={{ flex: 1, padding: "32px 36px", overflowY: "auto" }} className="fade-in">
@@ -137,7 +161,7 @@ export default function Dashboard() {
             </div>
 
             {/* Stats row */}
-            <div style={{ display: "flex", gap: 20 }}>
+            <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
               {[
                 { val: totalTests, lbl: "Tests Taken", icon: "📝" },
                 { val: avgAcc !== "—" ? avgAcc + "%" : "—", lbl: "Avg Accuracy", icon: "🎯" },
