@@ -52,13 +52,19 @@
   --shadow-gold-glow: none;
 
   /* Layout */
-  --navbar-h: 68px;
+  --navbar-h: 72px;
   --sidebar-w: 260px;
   --radius: 12px;
   --radius-sm: 6px;
   --radius-lg: 18px;
-  --container-px: 80px;
+  --container-px: 120px;
   --container-px-mobile: 24px;
+}
+
+@media (max-width: 1400px) {
+  :root {
+    --container-px: 80px;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -104,23 +110,24 @@ body::before {
   display: none;
 }
 
-/* Scrollbar */
+/* Scrollbar — Theme Aligned */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a2438;
+  background: var(--bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #671722;
-  border-radius: 4px;
+  background: var(--border);
+  border-radius: 10px;
+  border: 2px solid var(--bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #83e2f6;
+  background: var(--text-muted);
 }
 
 /* Responsive Layout Utils */
@@ -131,9 +138,17 @@ body::before {
   width: 100%;
 }
 
+.section-padding {
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
 @media (max-width: 768px) {
   .section-padding {
-    padding: 40px var(--container-px) !important;
+    padding-top: 80px !important;
+    padding-bottom: 80px !important;
+    padding-left: var(--container-px) !important;
+    padding-right: var(--container-px) !important;
   }
 
   .mobile-stack {

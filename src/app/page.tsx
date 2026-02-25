@@ -83,10 +83,11 @@ export default function HomePage() {
             </div>
 
             <h1 style={{
-              fontSize: "clamp(40px, 8vw, 72px)",
-              fontWeight: 900, lineHeight: 1.1,
-              fontFamily: "Poppins", marginBottom: 22,
-              color: "var(--primary)"
+              fontSize: "clamp(48px, 9vw, 84px)",
+              fontWeight: 900, lineHeight: 1.05,
+              fontFamily: 'Poppins', marginBottom: 28,
+              color: "var(--primary)",
+              letterSpacing: "-0.03em"
             }}>
               Master the<br />
               <span style={{ color: "var(--text-muted)" }}>Art of the</span><br />
@@ -94,17 +95,17 @@ export default function HomePage() {
             </h1>
 
             <p style={{
-              fontSize: 18, color: "var(--text-secondary)", lineHeight: 1.8,
-              marginBottom: 40, maxWidth: 500,
+              fontSize: 20, color: "var(--text-secondary)", lineHeight: 1.6,
+              marginBottom: 48, maxWidth: 540,
               marginLeft: "auto", marginRight: "auto"
             }}>
-              Premium interview preparation engineered with an olive-colored precision.
+              Premium interview preparation engineered with academic precision.
               Timed trials, detailed analytics, and the wisdom to help you succeed.
             </p>
 
             {/* CTA buttons */}
-            <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 48, justifyContent: "inherit" }}>
-              <Link href="/auth/register" className="btn btn-primary btn-xl" style={{ minWidth: 200 }}>
+            <div style={{ display: "flex", gap: 20, flexWrap: "wrap", marginBottom: 64, justifyContent: "inherit" }}>
+              <Link href="/auth/register" className="btn btn-primary btn-xl" style={{ minWidth: 220 }}>
                 Get Started
               </Link>
               <Link href="/auth/login" className="btn btn-outline btn-xl">
@@ -113,7 +114,7 @@ export default function HomePage() {
             </div>
 
             {/* Stats row */}
-            <div className="mobile-hide" style={{ display: "flex", gap: 40, justifyContent: "inherit" }}>
+            <div className="mobile-hide" style={{ display: "flex", gap: 60, justifyContent: "inherit" }}>
               {[
                 { val: "500+", lbl: "Questions", icon: "💎" },
                 { val: "6", lbl: "Subjects", icon: "🏛️" },
@@ -158,7 +159,7 @@ export default function HomePage() {
             ══════════════════════════════════════ */}
         <section className="container section-padding">
           {/* Section header */}
-          <div style={{ marginBottom: 60 }} className="mobile-text-center">
+          <div style={{ marginBottom: 80 }} className="mobile-text-center">
             <div style={{
               display: "inline-block", padding: "6px 16px", borderRadius: 20, marginBottom: 14,
               background: "#F0EEE0", border: "1px solid var(--border)",
@@ -199,8 +200,8 @@ export default function HomePage() {
           ) : (
             <div style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-              gap: 32,
+              gridTemplateColumns: "repeat(auto-fill, minmax(360px, 1fr))",
+              gap: 48,
             }}>
               {subjects.map((s, i) => {
                 const meta = SUBJECT_META[s.name] ?? { icon: "📚", color: "#4B5320", desc: "" };
@@ -256,8 +257,8 @@ export default function HomePage() {
         {/* ══════════════════════════════════════
             FEATURES 
             ══════════════════════════════════════ */}
-        <section className="container section-padding">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }} className="mobile-stack">
+        <section className="container section-padding" style={{ paddingTop: 160, paddingBottom: 160 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 100, alignItems: "center" }} className="mobile-stack">
 
             {/* LEFT — Feature cards */}
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
