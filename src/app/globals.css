@@ -2,61 +2,61 @@
 @import "tailwindcss";
 
 /* ============================================
-   🎨 CUSTOM PALETTE
-   #161f2e · #671722 · #83e2f6 · #e8eac7 · #a2babe
+   🎨 OLIVE & BEIGE PALETTE (Solid & Clean)
+   #3D550C · #F9F7E8 · #2E3317 · #AEB7B3
    ============================================ */
 :root {
-  /* Primary — deep crimson */
-  --primary: #671722;
-  --primary-dark: #4A1018;
-  --primary-light: #8A2030;
+  /* Primary — Olive Green */
+  --primary: #3D550C;
+  --primary-dark: #2E4009;
+  --primary-light: #4E6B10;
   --primary-glow: transparent;
 
-  /* Accent — electric cyan */
-  --gold: #83e2f6;
-  --gold-light: #a8ecf9;
-  --gold-dark: #5BBDD4;
+  /* Accent — Muted Olive / Beige variants */
+  --gold: #3D550C;
+  --gold-light: #4E6B10;
+  --gold-dark: #2E4009;
   --gold-glow: transparent;
 
-  /* Secondary — steel blue-gray */
-  --secondary: #a2babe;
+  /* Secondary — Soft Gray-Green */
+  --secondary: #AEB7B3;
   --secondary-glow: transparent;
 
   /* Status */
   --success: #2D7A4F;
-  --danger: #671722;
+  --danger: #8B0000;
   --warning: #C4860A;
 
-  /* Backgrounds — deep navy */
-  --bg: #161f2e;
-  --bg-secondary: #1C2840;
-  --bg-card: #1a2438;
-  --bg-card-hover: rgba(103, 23, 34, 0.08);
-  --bg-glass: rgba(22, 31, 46, 0.92);
+  /* Backgrounds — Beige based */
+  --bg: #F9F7E8;
+  --bg-secondary: #F0EEE0;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F0EEE0;
+  --bg-glass: rgba(249, 247, 232, 0.95);
 
   /* Borders */
-  --border: rgba(131, 226, 246, 0.18);
-  --border-light: rgba(162, 186, 190, 0.2);
-  --border-focus: #83e2f6;
+  --border: #D1D1C0;
+  --border-light: #E1E1D0;
+  --border-focus: #3D550C;
 
   /* Text */
-  --text: #e8eac7;
-  --text-secondary: #a2babe;
-  --text-muted: #6B7D8A;
+  --text: #2E3317;
+  --text-secondary: #4B5320;
+  --text-muted: #7A8060;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.55);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.6);
-  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.7);
+  /* Shadows — Subtle for Beige theme */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.1);
   --shadow-red-glow: none;
   --shadow-gold-glow: none;
 
   /* Layout */
   --navbar-h: 68px;
   --sidebar-w: 260px;
-  --radius: 14px;
-  --radius-sm: 8px;
-  --radius-lg: 20px;
+  --radius: 12px;
+  --radius-sm: 6px;
+  --radius-lg: 18px;
   --container-px: 80px;
   --container-px-mobile: 24px;
 }
@@ -99,14 +99,9 @@ body {
   overflow-x: hidden;
 }
 
-/* Crimson top vignette — moved to z-index 1 to sit above base bg but below content */
+/* No vignetting for solid theme */
 body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(103, 23, 34, 0.15) 0%, transparent 75%);
-  pointer-events: none;
-  z-index: 1;
+  display: none;
 }
 
 /* Scrollbar */
@@ -694,10 +689,10 @@ a {
 
 /* Gradient text — crimson into cyan */
 .gradient-text {
-  background: linear-gradient(135deg, #671722 0%, #83e2f6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--primary);
+  background-clip: unset;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
 }
 
 /* ============================================
@@ -815,65 +810,54 @@ a {
   transform: none !important;
 }
 
-/* Primary — deep crimson */
+/* Primary — Olive Green */
 .btn-primary {
-  background: #671722;
-  color: #e8eac7;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  border: 1px solid #4A1018;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-size: 13px;
+  background: var(--primary);
+  color: white;
+  border: 1px solid var(--primary-dark);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #8A2030;
+  background: var(--primary-light);
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-md);
 }
 
-/* Cyan accent */
+/* Gold Variant — Primary Olive */
 .btn-gold {
-  background: #83e2f6;
-  color: #161f2e;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  border: 1px solid #5BBDD4;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-size: 13px;
+  background: var(--primary);
+  color: white;
+  border: 1px solid var(--primary-dark);
 }
 
 .btn-gold:hover:not(:disabled) {
-  background: #a8ecf9;
+  background: var(--primary-light);
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-md);
 }
 
-/* Secondary — steel muted */
+/* Secondary — soft beige */
 .btn-secondary {
-  background: #1C2840;
-  color: #a2babe;
-  border: 1px solid rgba(131, 226, 246, 0.18);
+  background: #F0EEE0;
+  color: var(--primary);
+  border: 1px solid var(--border);
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: #263550;
-  border-color: #83e2f6;
-  color: #e8eac7;
-  transform: translateY(-1px);
+  background: #E8E6D8;
+  border-color: var(--text-muted);
 }
 
-/* Outline — cyan border */
+/* Outline — olive border */
 .btn-outline {
   background: transparent;
-  border: 1.5px solid #83e2f6;
-  color: #a8ecf9;
+  border: 1.5px solid var(--primary);
+  color: var(--primary);
 }
 
 .btn-outline:hover:not(:disabled) {
-  background: rgba(131, 226, 246, 0.08);
-  border-color: #a8ecf9;
+  background: #F0EEE0;
+  border-color: var(--primary-dark);
   transform: translateY(-1px);
 }
 
