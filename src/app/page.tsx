@@ -69,18 +69,7 @@ export default function HomePage() {
             opacity: visible ? 1 : 0,
             zIndex: 10
           }} className="mobile-text-center">
-            {/* Status pill */}
-            <div style={{
-              display: "inline-flex", alignItems: "center", gap: 10,
-              height: 32, padding: "0 16px", borderRadius: 40, marginBottom: 28,
-              background: "#F0EEE0",
-              border: "1px solid var(--border)",
-              fontSize: 12, fontWeight: 700, letterSpacing: "0.1em",
-              color: "var(--primary)", textTransform: "uppercase",
-            }}>
-              <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e", animation: "blink 1.5s ease-in-out infinite" }} />
-              Academy Protocol engaged
-            </div>
+
 
             <h1 style={{
               fontSize: "clamp(48px, 9vw, 84px)",
@@ -160,13 +149,7 @@ export default function HomePage() {
         <section className="container section-padding">
           {/* Section header */}
           <div style={{ marginBottom: 80 }} className="mobile-text-center">
-            <div style={{
-              display: "inline-flex", alignItems: "center", height: 32, padding: "0 16px", borderRadius: 20, marginBottom: 14,
-              background: "#F0EEE0", border: "1px solid var(--border)",
-              fontSize: 12, fontWeight: 700, color: "var(--primary)", textTransform: "uppercase", letterSpacing: "0.12em",
-            }}>
-              🌿 The Arsenal
-            </div>
+
             <h2 style={{ fontSize: "clamp(32px, 5vw, 42px)", fontWeight: 900, fontFamily: "Poppins", marginBottom: 12, color: "var(--primary)" }}>
               Subject Specializations
             </h2>
@@ -292,13 +275,7 @@ export default function HomePage() {
 
             {/* RIGHT — Title + CTA */}
             <div className="mobile-text-center">
-              <div style={{
-                display: "inline-flex", alignItems: "center", height: 32, padding: "0 16px", borderRadius: 20, marginBottom: 16,
-                background: "#F0EEE0", border: "1px solid var(--border)",
-                fontSize: 12, fontWeight: 700, color: "var(--primary)", textTransform: "uppercase", letterSpacing: "0.12em",
-              }}>
-                🏛️ Elite Standards
-              </div>
+
               <h2 style={{ fontSize: "clamp(30px, 5vw, 40px)", fontWeight: 900, fontFamily: "Poppins", lineHeight: 1.2, marginBottom: 20, color: "var(--primary)" }}>
                 Forge Your Future <br />
                 <span style={{ color: "var(--text-muted)" }}>With Precision</span>
