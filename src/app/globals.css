@@ -54,6 +54,7 @@
   /* Layout */
   --navbar-h: 72px;
   --sidebar-w: 260px;
+  --sidebar-w-collapsed: 80px;
   --radius: 12px;
   --radius-sm: 6px;
   --radius-lg: 18px;
@@ -948,6 +949,26 @@ a {
   top: var(--navbar-h);
   height: calc(100vh - var(--navbar-h));
   overflow-y: auto;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-x: hidden;
+}
+
+.sidebar.collapsed {
+  width: var(--sidebar-w-collapsed);
+}
+
+.sidebar.collapsed .sidebar-section,
+.sidebar.collapsed .sidebar-item span:not(:first-child),
+.sidebar.collapsed div:not(.logo-icon) h1,
+.sidebar.collapsed .hidden-collapsed {
+  display: none !important;
+}
+
+.sidebar.collapsed .sidebar-item {
+  justify-content: center;
+  padding: 12px 0;
+  margin-right: 0;
+  border-radius: 0;
 }
 
 .sidebar-item {

@@ -20,7 +20,12 @@ const SUBJECT_COLORS: Record<string, string> = {
   default: "#3D550C"
 };
 
-function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (o: boolean) => void }) {
+function Sidebar({ isOpen, setIsOpen, isCollapsed, setIsCollapsed }: {
+  isOpen: boolean;
+  setIsOpen: (o: boolean) => void;
+  isCollapsed: boolean;
+  setIsCollapsed: (c: boolean) => void;
+}) {
   const pathname = usePathname();
   const { isAdmin } = useAuth();
 
@@ -36,11 +41,23 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (o: boolea
       {/* Mobile Backdrop */}
       {isOpen && <div className="sidebar-backdrop" onClick={() => setIsOpen(false)} />}
 
-      <aside className={`sidebar ${isOpen ? "sidebar-open" : ""}`} style={{ display: "flex", flexDirection: "column" }}>
-        {/* Logo */}
+      <aside className={`sidebar ${isOpen ? "sidebar-open" : ""} ${isCollapsed ? "collapsed" : ""}`} style={{ display: "flex", flexDirection: "column" }}>
+        {/* Logo & Toggle */}
         <div style={{ padding: "8px 22px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Link href="/" style={{ fontSize: 18, fontWeight: 900, textDecoration: "none", color: "var(--primary)" }}>⚡ ThorPrep</Link>
-          <button className="mobile-only-flex" onClick={() => setIsOpen(false)} style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: 20 }}>✕</button>
+          {!isCollapsed && <Link href="/" style={{ fontSize: 18, fontWeight: 900, textDecoration: "none", color: "var(--primary)" }}>⚡ ThorPrep</Link>}
+          {isCollapsed && <div className="logo-icon" style={{ fontSize: 24, margin: "0 auto" }}>⚡</div>}
+
+          <div style={{ display: "flex", gap: 4 }}>
+            <button className="mobile-only-flex" onClick={() => setIsOpen(false)} style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: 20 }}>✕</button>
+            <button
+              className="desktop-only"
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer", fontSize: 16 }}
+              title={isCollapsed ? "Expand" : "Collapse"}
+            >
+              {isCollapsed ? "»" : "«"}
+            </button>
+          </div>
         </div>
 
         <div className="sidebar-section">Navigation</div>
@@ -50,23 +67,27 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (o: boolea
             href={l.href}
             onClick={() => setIsOpen(false)}
             className={`sidebar-item ${pathname === l.href ? "active" : ""}`}
+            title={isCollapsed ? l.label : ""}
           >
             <span style={{ fontSize: 18 }}>{l.icon}</span>
-            {l.label}
+            <span style={{ display: isCollapsed ? "none" : "block" }}>{l.label}</span>
           </Link>
         ))}
 
         <div className="sidebar-section" style={{ marginTop: 20 }}>Subjects</div>
         {["Java", "SQL", "Angular", "Aptitude", "Web Development", "Python"].map(s => (
-          <div key={s} className="sidebar-item" style={{ fontSize: 13 }}>
-            <span>{SUBJECT_ICONS[s]}</span> {s}
+          <div key={s} className="sidebar-item" style={{ fontSize: 13 }} title={isCollapsed ? s : ""}>
+            <span style={{ fontSize: 18 }}>{SUBJECT_ICONS[s]}</span>
+            <span style={{ display: isCollapsed ? "none" : "block" }}>{s}</span>
           </div>
         ))}
 
         {/* Bottom Credit */}
-        <div style={{ marginTop: "auto", padding: "20px 22px", fontSize: 12, color: "var(--text-muted)" }}>
-          PrepMaster v2.0 © 2026
-        </div>
+        {!isCollapsed && (
+          <div style={{ marginTop: "auto", padding: "20px 22px", fontSize: 12, color: "var(--text-muted)" }}>
+            ThorPrep v2.0 © 2026
+          </div>
+        )}
       </aside>
     </>
   );
@@ -105,13 +126,19 @@ export default function Dashboard() {
     : "—";
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const gradeColor = (acc: number) =>
     acc >= 70 ? "#10b981" : acc >= 40 ? "#f59e0b" : "#ef4444";
 
   return (
     <div style={{ display: "flex", minHeight: "calc(100vh - var(--navbar-h))", paddingTop: "var(--navbar-h)" }}>
-      <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+      <Sidebar
+        isOpen={sidebarOpen}
+        setIsOpen={setSidebarOpen}
+        isCollapsed={sidebarCollapsed}
+        setIsCollapsed={setSidebarCollapsed}
+      />
 
       {/* Mobile Toggle Button */}
       <button
