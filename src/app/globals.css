@@ -72,11 +72,12 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: var(--bg);
 }
 
 body {
   font-family: 'Poppins', 'Inter', -apple-system, sans-serif;
-  background: var(--bg);
+  background: transparent;
   color: var(--text);
   min-height: 100vh;
   line-height: 1.6;
@@ -84,14 +85,14 @@ body {
   overflow-x: hidden;
 }
 
-/* Crimson top vignette */
+/* Crimson top vignette — moved to z-index 1 to sit above base bg but below content */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(103, 23, 34, 0.1) 0%, transparent 70%);
+  background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(103, 23, 34, 0.15) 0%, transparent 75%);
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
 }
 
 /* Scrollbar */

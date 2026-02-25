@@ -19,11 +19,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body style={{ position: "relative", isolation: "isolate" }}>
-        {/* Thor storm background — renders behind everything */}
-        <IronManBackground />
-        {/* All page content sits above z-index:2 */}
-        <div style={{ position: "relative", zIndex: 2 }}>
+      <body style={{ position: "relative" }}>
+        {/* Thor storm background — temporarily disabled for debugging */}
+        {/* <IronManBackground /> */}
+        {/* All page content */}
+        <div style={{ position: "relative", zIndex: 1 }}>
           <AuthProvider>{children}</AuthProvider>
         </div>
       </body>

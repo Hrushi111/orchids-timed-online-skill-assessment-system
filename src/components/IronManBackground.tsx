@@ -125,84 +125,84 @@ export default function IronManBackground() {
                 style={{
                     position: "fixed", inset: 0,
                     width: "100%", height: "100%",
-                    pointerEvents: "none", zIndex: 0,
+                    pointerEvents: "none", zIndex: -1,
                 }}
             />
 
-            {/* ── Storm gradient mesh ── */}
+            {/* ── Background vignette/mesh ── */}
             <div style={{
                 position: "fixed", inset: 0,
                 background: `
-                  radial-gradient(ellipse 70% 60% at 15% 20%, rgba(29,78,216,0.12) 0%, transparent 65%),
-                  radial-gradient(ellipse 55% 50% at 85% 75%, rgba(109,40,217,0.08) 0%, transparent 60%),
-                  radial-gradient(ellipse 45% 40% at 50% 50%, rgba(30,58,138,0.10) 0%, transparent 55%),
-                  radial-gradient(ellipse 80% 70% at 80% 10%, rgba(96,165,250,0.05) 0%, transparent 60%)
+                  radial-gradient(ellipse 70% 60% at 15% 20%, rgba(103,23,34,0.2) 0%, transparent 65%),
+                  radial-gradient(ellipse 55% 50% at 85% 75%, rgba(131,226,246,0.15) 0%, transparent 60%),
+                  radial-gradient(ellipse 45% 40% at 50% 50%, rgba(22,31,46,0.4) 0%, transparent 55%),
+                  radial-gradient(ellipse 80% 70% at 80% 10%, rgba(131,226,246,0.1) 0%, transparent 60%)
                 `,
-                pointerEvents: "none", zIndex: 0,
+                pointerEvents: "none", zIndex: -1,
             }} />
 
             {/* ── Diagonal rune-grid overlay ── */}
             <div style={{
                 position: "fixed", inset: 0,
                 backgroundImage: `
-                  linear-gradient(rgba(96,165,250,0.04) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(96,165,250,0.04) 1px, transparent 1px)
+                  linear-gradient(rgba(131,226,246,0.08) 1.5px, transparent 1.5px),
+                  linear-gradient(90deg, rgba(131,226,246,0.08) 1.5px, transparent 1.5px)
                 `,
-                backgroundSize: "70px 70px",
-                pointerEvents: "none", zIndex: 0,
-                maskImage: "radial-gradient(ellipse 75% 75% at 50% 50%, black 30%, transparent 100%)",
-                WebkitMaskImage: "radial-gradient(ellipse 75% 75% at 50% 50%, black 30%, transparent 100%)",
+                backgroundSize: "90px 90px",
+                pointerEvents: "none", zIndex: -1,
+                maskImage: "radial-gradient(ellipse 80% 80% at 50% 50%, black 10%, transparent 95%)",
+                WebkitMaskImage: "radial-gradient(ellipse 80% 80% at 50% 50%, black 10%, transparent 95%)",
+                opacity: 0.5,
             }} />
 
-            {/* ── Corner Mjolnir brackets ── */}
+            {/* ── Corner accents ── */}
             {/* Top-left */}
-            <div style={{ position: "fixed", top: 88, left: 18, pointerEvents: "none", zIndex: 1 }}>
-                <div style={{ width: 36, height: 36, borderTop: "2px solid rgba(96,165,250,0.3)", borderLeft: "2px solid rgba(96,165,250,0.3)", borderRadius: "4px 0 0 0" }} />
+            <div style={{ position: "fixed", top: 80, left: 16, pointerEvents: "none", zIndex: -1 }}>
+                <div style={{ width: 40, height: 40, borderTop: "2px solid rgba(131,226,246,0.25)", borderLeft: "2px solid rgba(131,226,246,0.25)", borderRadius: "6px 0 0 0" }} />
             </div>
             {/* Top-right */}
-            <div style={{ position: "fixed", top: 88, right: 18, pointerEvents: "none", zIndex: 1 }}>
-                <div style={{ width: 36, height: 36, borderTop: "2px solid rgba(251,191,36,0.25)", borderRight: "2px solid rgba(251,191,36,0.25)", borderRadius: "0 4px 0 0" }} />
+            <div style={{ position: "fixed", top: 80, right: 16, pointerEvents: "none", zIndex: -1 }}>
+                <div style={{ width: 40, height: 40, borderTop: "2px solid rgba(103,23,34,0.3)", borderRight: "2px solid rgba(103,23,34,0.3)", borderRadius: "0 6px 0 0" }} />
             </div>
             {/* Bottom-left */}
-            <div style={{ position: "fixed", bottom: 18, left: 18, pointerEvents: "none", zIndex: 1 }}>
-                <div style={{ width: 36, height: 36, borderBottom: "2px solid rgba(96,165,250,0.2)", borderLeft: "2px solid rgba(96,165,250,0.2)", borderRadius: "0 0 0 4px" }} />
+            <div style={{ position: "fixed", bottom: 16, left: 16, pointerEvents: "none", zIndex: -1 }}>
+                <div style={{ width: 40, height: 40, borderBottom: "2px solid rgba(103,23,34,0.2)", borderLeft: "2px solid rgba(103,23,34,0.2)", borderRadius: "0 0 0 6px" }} />
             </div>
             {/* Bottom-right */}
-            <div style={{ position: "fixed", bottom: 18, right: 18, pointerEvents: "none", zIndex: 1 }}>
-                <div style={{ width: 36, height: 36, borderBottom: "2px solid rgba(251,191,36,0.2)", borderRight: "2px solid rgba(251,191,36,0.2)", borderRadius: "0 0 4px 0" }} />
+            <div style={{ position: "fixed", bottom: 16, right: 16, pointerEvents: "none", zIndex: -1 }}>
+                <div style={{ width: 40, height: 40, borderBottom: "2px solid rgba(131,226,246,0.25)", borderRight: "2px solid rgba(131,226,246,0.25)", borderRadius: "0 0 6px 0" }} />
             </div>
 
-            {/* ── Left rune readout ── */}
+            {/* ── Side text panels ── */}
             <div style={{
-                position: "fixed", left: 14, top: "50%", transform: "translateY(-50%)",
-                pointerEvents: "none", zIndex: 1,
-                display: "flex", flexDirection: "column", gap: 7,
-                opacity: 0.18,
+                position: "fixed", left: 12, top: "55%", transform: "translateY(-50%)",
+                pointerEvents: "none", zIndex: -1,
+                display: "flex", flexDirection: "column", gap: 8,
+                opacity: 0.2,
             }}>
-                {["ODIN PROTOCOL", "BIFROST: LOCKED", "MJOLNIR: WORTHY", "ASGARD: ONLINE", "THUNDER: READY"].map((txt, i) => (
+                {["CRIMSON PROTOCOL", "CYAN: ENGAGED", "WORTHY: TRUE", "CORES: OPTIMAL", "SYSTEM: ARMORED"].map((txt, i) => (
                     <div key={txt} style={{
                         fontSize: 9, fontFamily: "monospace",
-                        color: i % 2 === 0 ? "#60A5FA" : "#FBB724",
-                        letterSpacing: "0.15em",
-                        animation: `blink ${2 + i * 0.5}s ease-in-out infinite`,
+                        color: i % 2 === 0 ? "#671722" : "#83e2f6",
+                        letterSpacing: "0.2em",
+                        animation: `blink ${3 + i * 0.5}s ease-in-out infinite`,
                         animationDelay: `${i * 0.4}s`,
                     }}>{txt}</div>
                 ))}
             </div>
 
-            {/* ── Right rune readout ── */}
             <div style={{
-                position: "fixed", right: 14, top: "50%", transform: "translateY(-50%)",
-                pointerEvents: "none", zIndex: 1,
-                display: "flex", flexDirection: "column", gap: 7, alignItems: "flex-end",
-                opacity: 0.18,
+                position: "fixed", right: 12, top: "55%", transform: "translateY(-50%)",
+                pointerEvents: "none", zIndex: -1,
+                display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-end",
+                opacity: 0.2,
             }}>
-                {["SHIELD: RAISED", "LIGHTNING: 100%", "REALM: SECURED", "POWER: DIVINE", "STATUS: WORTHY"].map((txt, i) => (
+                {["REACTIVE ARMOR", "STEEL: REINFORCED", "OUTPUT: DIVINE", "TEMP: STABLE", "STATUS: ACTIVE"].map((txt, i) => (
                     <div key={txt} style={{
                         fontSize: 9, fontFamily: "monospace",
-                        color: i % 2 === 0 ? "#A78BFA" : "#60A5FA",
-                        letterSpacing: "0.15em",
-                        animation: `blink ${2.5 + i * 0.4}s ease-in-out infinite`,
+                        color: i % 2 === 0 ? "#a2babe" : "#83e2f6",
+                        letterSpacing: "0.2em",
+                        animation: `blink ${3.5 + i * 0.4}s ease-in-out infinite`,
                         animationDelay: `${i * 0.6 + 0.3}s`,
                     }}>{txt}</div>
                 ))}

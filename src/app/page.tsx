@@ -5,12 +5,12 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 
 const SUBJECT_META: Record<string, { icon: string; color: string; desc: string }> = {
-  Java: { icon: "☕", color: "linear-gradient(135deg,#1D62D3,#0D3A80)", desc: "OOPs, Collections, Multithreading" },
-  SQL: { icon: "🗄️", color: "linear-gradient(135deg,#FBB724,#A86400)", desc: "Joins, Indexing, Aggregates" },
-  Angular: { icon: "🔺", color: "linear-gradient(135deg,#7C3AED,#4C1D95)", desc: "Components, RxJS, Lifecycle" },
-  Aptitude: { icon: "🧠", color: "linear-gradient(135deg,#1447A0,#0D2560)", desc: "Quant, Logical, Verbal" },
-  "Web Development": { icon: "🌐", color: "linear-gradient(135deg,#D4920A,#8B5E00)", desc: "HTML, CSS, JS, React" },
-  Python: { icon: "🐍", color: "linear-gradient(135deg,#3B82F6,#1E40AF)", desc: "Data Structures, OOP, Algorithms" },
+  Java: { icon: "☕", color: "linear-gradient(135deg,#671722,#4A1018)", desc: "OOPs, Collections, Multithreading" },
+  SQL: { icon: "🗄️", color: "linear-gradient(135deg,#83e2f6,#5BBDD4)", desc: "Joins, Indexing, Aggregates" },
+  Angular: { icon: "🔺", color: "linear-gradient(135deg,#a2babe,#6B7D8A)", desc: "Components, RxJS, Lifecycle" },
+  Aptitude: { icon: "🧠", color: "linear-gradient(135deg,#671722,#4A1018)", desc: "Quant, Logical, Verbal" },
+  "Web Development": { icon: "🌐", color: "linear-gradient(135deg,#83e2f6,#5BBDD4)", desc: "HTML, CSS, JS, React" },
+  Python: { icon: "🐍", color: "linear-gradient(135deg,#e8eac7,#c0c2a5)", desc: "Data Structures, OOP, Algorithms" },
 };
 
 export default function HomePage() {
@@ -19,12 +19,32 @@ export default function HomePage() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    supabase.from("subjects").select("*").order("name").then(({ data }) => {
-      setSubjects(data ?? []);
+    // 3.5s Safety net
+    const safetyNet = setTimeout(() => {
       setLoading(false);
-    });
+    }, 3500);
+
+    async function loadSubjects() {
+      try {
+        const { data, error } = await supabase.from("subjects").select("*").order("name");
+        if (error) {
+          console.error("Supabase Error:", error);
+        }
+        setSubjects(data ?? []);
+      } catch (err: any) {
+        console.error("Fetch Exception:", err);
+      } finally {
+        setLoading(false);
+        clearTimeout(safetyNet);
+      }
+    }
+
+    loadSubjects();
     const t = setTimeout(() => setVisible(true), 80);
-    return () => clearTimeout(t);
+    return () => {
+      clearTimeout(t);
+      clearTimeout(safetyNet);
+    };
   }, []);
 
   return (
@@ -50,13 +70,13 @@ export default function HomePage() {
             <div style={{
               display: "inline-flex", alignItems: "center", gap: 8,
               padding: "6px 16px", borderRadius: 40, marginBottom: 28,
-              background: "rgba(29,98,211,0.12)",
-              border: "1px solid rgba(59,130,246,0.3)",
+              background: "rgba(131,226,246,0.08)",
+              border: "1px solid rgba(131,226,246,0.2)",
               fontSize: 12, fontWeight: 600, letterSpacing: "0.1em",
-              color: "#FCD34D", textTransform: "uppercase",
+              color: "#83e2f6", textTransform: "uppercase",
             }}>
               <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#22c55e", animation: "blink 1.5s ease-in-out infinite" }} />
-              Bifrost Active — Asgard Online
+              Crimson Protocol engaged — Worthy Only
             </div>
 
             <h1 style={{
@@ -68,16 +88,16 @@ export default function HomePage() {
               <br />
               <span style={{ color: "var(--text)" }}>You Are</span>
               <br />
-              <span style={{ color: "#FCD34D", fontStyle: "italic" }}>Worthy</span>
+              <span style={{ color: "#83e2f6", fontStyle: "italic" }}>Worthy</span>
             </h1>
 
             <p style={{
               fontSize: 17, color: "var(--text-secondary)", lineHeight: 1.8,
               marginBottom: 36, maxWidth: 460,
             }}>
-              Thor-powered interview prep. Timed quizzes, instant analytics,
-              and lightning-fast feedback — engineered to make you{" "}
-              <strong style={{ color: "#FCD34D" }}>interview-ready</strong>.
+              Crimson-grade interview prep. Timed quizzes, instant analytics,
+              and divine feedback — engineered to make you{" "}
+              <strong style={{ color: "#83e2f6" }}>interview-ready</strong>.
             </p>
 
             {/* CTA buttons */}
