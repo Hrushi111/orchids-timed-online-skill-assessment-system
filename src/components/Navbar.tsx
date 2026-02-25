@@ -102,7 +102,7 @@ export default function Navbar() {
                 gap: 10,
                 padding: "6px 14px 6px 6px",
                 borderRadius: 40,
-                background: "white",
+                background: "var(--bg-card)",
                 border: "1px solid var(--border)",
                 cursor: "pointer",
                 transition: "all 0.2s",
@@ -125,7 +125,7 @@ export default function Navbar() {
             {menuOpen && (
               <div style={{
                 position: "absolute", right: 0, top: "calc(100% + 10px)",
-                background: "white",
+                background: "var(--bg-card)",
                 border: "1px solid var(--border)",
                 borderRadius: 14,
                 boxShadow: "var(--shadow-lg)",

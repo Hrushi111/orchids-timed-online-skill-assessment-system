@@ -177,7 +177,7 @@ export default function TestStartPage() {
                     padding: "12px 14px",
                     borderRadius: 10,
                     border: `1.5px solid ${difficulty === val ? info.color : "var(--border)"}`,
-                    background: difficulty === val ? `${info.color}18` : "rgba(255,255,255,0.03)",
+                    background: difficulty === val ? `${info.color}18` : "var(--bg-secondary)",
                     cursor: "pointer",
                     textAlign: "left",
                     transition: "all 0.2s",
