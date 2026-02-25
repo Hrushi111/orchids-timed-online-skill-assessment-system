@@ -1,159 +1,379 @@
 "use client";
-import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import { useAuth } from "@/lib/auth-context";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import Link from "next/link";
+import Navbar from "@/components/Navbar";
 
-const SUBJECT_ICONS: Record<string, string> = {
-  Java: "☕", SQL: "🗄️", Angular: "🔺", Aptitude: "🧠",
-  "Web Development": "🌐", Python: "🐍", default: "📚"
-};
-const SUBJECT_COLORS: Record<string, string> = {
-  Java: "linear-gradient(135deg,#f97316,#fb923c)",
-  SQL: "linear-gradient(135deg,#3b82f6,#60a5fa)",
-  Angular: "linear-gradient(135deg,#ef4444,#f87171)",
-  Aptitude: "linear-gradient(135deg,#8b5cf6,#a78bfa)",
-  "Web Development": "linear-gradient(135deg,#06b6d4,#22d3ee)",
-  Python: "linear-gradient(135deg,#10b981,#34d399)",
-  default: "linear-gradient(135deg,#4f46e5,#818cf8)"
+const SUBJECT_META: Record<string, { icon: string; color: string; desc: string }> = {
+  Java: { icon: "☕", color: "linear-gradient(135deg,#1D62D3,#0D3A80)", desc: "OOPs, Collections, Multithreading" },
+  SQL: { icon: "🗄️", color: "linear-gradient(135deg,#FBB724,#A86400)", desc: "Joins, Indexing, Aggregates" },
+  Angular: { icon: "🔺", color: "linear-gradient(135deg,#7C3AED,#4C1D95)", desc: "Components, RxJS, Lifecycle" },
+  Aptitude: { icon: "🧠", color: "linear-gradient(135deg,#1447A0,#0D2560)", desc: "Quant, Logical, Verbal" },
+  "Web Development": { icon: "🌐", color: "linear-gradient(135deg,#D4920A,#8B5E00)", desc: "HTML, CSS, JS, React" },
+  Python: { icon: "🐍", color: "linear-gradient(135deg,#3B82F6,#1E40AF)", desc: "Data Structures, OOP, Algorithms" },
 };
 
-export default function Home() {
-  const { user } = useAuth();
-  const [subjects, setSubjects] = useState<{ name: string; id: string; duration_minutes: number; description: string }[]>([]);
+export default function HomePage() {
+  const [subjects, setSubjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    supabase.from("subjects").select("*").then(({ data }) => {
-      if (data) setSubjects(data);
+    supabase.from("subjects").select("*").order("name").then(({ data }) => {
+      setSubjects(data ?? []);
+      setLoading(false);
     });
+    const t = setTimeout(() => setVisible(true), 80);
+    return () => clearTimeout(t);
   }, []);
 
   return (
     <>
       <Navbar />
-      {/* Hero */}
-      <section style={{
-        background: "linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #0f172a 100%)",
-        color: "white",
-        padding: "80px 24px 100px",
-        textAlign: "center",
-        position: "relative",
-        overflow: "hidden"
-      }}>
-        <div style={{
-          position: "absolute", inset: 0, opacity: 0.05,
-          backgroundImage: "radial-gradient(circle at 25% 25%, #818cf8 0%, transparent 50%), radial-gradient(circle at 75% 75%, #06b6d4 0%, transparent 50%)"
-        }} />
-        <div style={{ position: "relative", maxWidth: 720, margin: "0 auto" }}>
-          <div className="badge badge-primary" style={{ marginBottom: 16, fontSize: 13, padding: "6px 14px" }}>
-            🎯 Interview Preparation Platform
-          </div>
-          <h1 style={{ fontSize: 52, fontWeight: 900, lineHeight: 1.1, marginBottom: 20 }}>
-            Ace Your Next<br />
-            <span style={{ background: "linear-gradient(90deg,#818cf8,#06b6d4)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-              Technical Interview
-            </span>
-          </h1>
-          <p style={{ fontSize: 18, opacity: 0.8, marginBottom: 36, lineHeight: 1.6 }}>
-            Practice with timed tests across Java, SQL, Angular, Aptitude and more.
-            Get instant feedback, track weak areas, and improve your skills systematically.
-          </p>
-          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-            {user ? (
-              <Link href="/dashboard" className="btn btn-primary btn-lg">
-                Go to Dashboard →
+      <main style={{ minHeight: "calc(100vh - 68px)", overflowX: "hidden" }}>
+
+        {/* ══════════════════════════════════════
+            HERO — Text LEFT · Mjolnir RIGHT
+            ══════════════════════════════════════ */}
+        <section style={{
+          minHeight: "calc(100vh - 68px)",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          alignItems: "center",
+          padding: "60px 60px 60px 80px",
+          gap: 40,
+          position: "relative",
+        }}>
+          {/* LEFT — Headline */}
+          <div style={{ animation: visible ? "slideInLeft 0.7s ease forwards" : "none", opacity: visible ? 1 : 0 }}>
+            {/* Status pill */}
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              padding: "6px 16px", borderRadius: 40, marginBottom: 28,
+              background: "rgba(29,98,211,0.12)",
+              border: "1px solid rgba(59,130,246,0.3)",
+              fontSize: 12, fontWeight: 600, letterSpacing: "0.1em",
+              color: "#FCD34D", textTransform: "uppercase",
+            }}>
+              <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#22c55e", animation: "blink 1.5s ease-in-out infinite" }} />
+              Bifrost Active — Asgard Online
+            </div>
+
+            <h1 style={{
+              fontSize: "clamp(36px, 4.5vw, 64px)",
+              fontWeight: 900, lineHeight: 1.1,
+              fontFamily: "Poppins", marginBottom: 22,
+            }}>
+              <span className="gradient-text">Prove</span>
+              <br />
+              <span style={{ color: "var(--text)" }}>You Are</span>
+              <br />
+              <span style={{ color: "#FCD34D", fontStyle: "italic" }}>Worthy</span>
+            </h1>
+
+            <p style={{
+              fontSize: 17, color: "var(--text-secondary)", lineHeight: 1.8,
+              marginBottom: 36, maxWidth: 460,
+            }}>
+              Thor-powered interview prep. Timed quizzes, instant analytics,
+              and lightning-fast feedback — engineered to make you{" "}
+              <strong style={{ color: "#FCD34D" }}>interview-ready</strong>.
+            </p>
+
+            {/* CTA buttons */}
+            <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 48 }}>
+              <Link href="/auth/register" className="btn btn-primary btn-xl" style={{ minWidth: 180 }}>
+                ⚡ Prove Worthy
               </Link>
-            ) : (
-              <>
-                <Link href="/auth/register" className="btn btn-primary btn-lg">Start Free Practice</Link>
-                <Link href="/auth/login" className="btn btn-outline btn-lg" style={{ color: "white", borderColor: "rgba(255,255,255,0.4)" }}>Log In</Link>
-              </>
-            )}
-          </div>
+              <Link href="/auth/login" className="btn btn-outline btn-xl">
+                → Sign In
+              </Link>
+            </div>
 
-          <div style={{ display: "flex", gap: 32, justifyContent: "center", marginTop: 52, flexWrap: "wrap" }}>
-            {[["100+", "Questions"], ["6", "Subjects"], ["Timed", "Tests"], ["Instant", "Results"]].map(([val, lbl]) => (
-              <div key={lbl}>
-                <div style={{ fontSize: 28, fontWeight: 800 }}>{val}</div>
-                <div style={{ fontSize: 13, opacity: 0.6 }}>{lbl}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Subjects */}
-      <section style={{ padding: "64px 24px" }}>
-        <div className="container">
-          <div className="page-header" style={{ textAlign: "center" }}>
-            <h2 className="page-title" style={{ fontSize: 32 }}>Available Subjects</h2>
-            <p className="page-subtitle" style={{ fontSize: 16 }}>Choose a subject and start a timed test right away</p>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px,1fr))", gap: 20 }}>
-            {subjects.map(s => (
-              <div key={s.id} className="card card-hover" style={{ padding: 24 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 14 }}>
-                  <div className="subject-icon" style={{ background: SUBJECT_COLORS[s.name] ?? SUBJECT_COLORS.default }}>
-                    {SUBJECT_ICONS[s.name] ?? SUBJECT_ICONS.default}
+            {/* Stats row */}
+            <div style={{ display: "flex", gap: 32 }}>
+              {[
+                { val: "500+", lbl: "Questions", icon: "❓" },
+                { val: "6", lbl: "Subjects", icon: "📚" },
+                { val: "100%", lbl: "Free", icon: "🆓" },
+              ].map(({ val, lbl, icon }) => (
+                <div key={lbl} style={{ textAlign: "left" }}>
+                  <div style={{ fontSize: 26, fontWeight: 900, fontFamily: "Poppins", color: "#FCD34D" }}>
+                    {icon} {val}
                   </div>
+                  <div style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 2 }}>{lbl}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* RIGHT — Mjolnir ring display */}
+          <div style={{
+            display: "flex", alignItems: "center", justifyContent: "center",
+            animation: visible ? "slideInRight 0.7s ease forwards" : "none",
+            opacity: visible ? 1 : 0,
+            position: "relative",
+          }}>
+            {/* Outer dashed ring — gold */}
+            <div style={{
+              position: "absolute", width: 380, height: 380, borderRadius: "50%",
+              border: "1px dashed rgba(251,183,36,0.25)",
+              animation: "spin 30s linear infinite",
+            }}>
+              {[0, 60, 120, 180, 240, 300].map(deg => (
+                <div key={deg} style={{
+                  position: "absolute", width: 8, height: 8, borderRadius: "50%",
+                  background: "#FBB724",
+                  top: "50%", left: "50%",
+                  transformOrigin: "0 0",
+                  transform: `rotate(${deg}deg) translate(189px, -4px)`,
+                }} />
+              ))}
+            </div>
+
+            {/* Middle ring — blue */}
+            <div style={{
+              position: "absolute", width: 280, height: 280, borderRadius: "50%",
+              border: "1px solid rgba(59,130,246,0.3)",
+              animation: "spin 20s linear infinite reverse",
+            }} />
+
+            {/* Inner ring — vivid blue */}
+            <div style={{
+              position: "absolute", width: 200, height: 200, borderRadius: "50%",
+              border: "2px solid rgba(29,98,211,0.5)",
+              animation: "spin 12s linear infinite",
+            }} />
+
+            {/* Mjolnir Core — lightning bolt center */}
+            <div style={{
+              position: "relative", width: 140, height: 140, borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(96,165,250,0.3) 0%, rgba(29,98,211,0.2) 50%, rgba(10,14,26,0.9) 100%)",
+              border: "3px solid rgba(59,130,246,0.5)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              animation: "arcReactorPulse 3s ease-in-out infinite",
+            }}>
+              {/* Lightning bolt SVG */}
+              <svg width="52" height="72" viewBox="0 0 52 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M32 2L4 42H22L16 70L50 28H30L32 2Z"
+                  fill="#FBB724" stroke="#FCD34D" strokeWidth="1.5" strokeLinejoin="round" />
+              </svg>
+            </div>
+
+            {/* HUD text around Mjolnir */}
+            {[
+              { text: "WORTHY", angle: -80, dist: 110 },
+              { text: "100%", angle: -60, dist: 115 },
+              { text: "THOR", angle: 120, dist: 110 },
+              { text: "ASGARD", angle: 140, dist: 115 },
+            ].map(({ text, angle, dist }) => {
+              const rad = angle * Math.PI / 180;
+              const x = 50 + Math.cos(rad) * dist / 1.4;
+              const y = 50 + Math.sin(rad) * dist / 1.4;
+              return (
+                <div key={text} style={{
+                  position: "absolute", left: `${x}%`, top: `${y}%`,
+                  transform: "translate(-50%,-50%)",
+                  fontSize: 10, fontFamily: "monospace", fontWeight: 700,
+                  color: "rgba(251,183,36,0.65)", letterSpacing: "0.15em",
+                  animation: "blink 3s ease-in-out infinite",
+                }}>
+                  {text}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════
+            SUBJECTS — Cards
+            ══════════════════════════════════════ */}
+        <section style={{ padding: "80px 60px 80px 80px" }}>
+          {/* Section header */}
+          <div style={{ marginBottom: 48 }}>
+            <div style={{
+              display: "inline-block", padding: "4px 14px", borderRadius: 20, marginBottom: 12,
+              background: "rgba(251,183,36,0.1)", border: "1px solid rgba(251,183,36,0.22)",
+              fontSize: 11, fontWeight: 700, color: "#FBB724", textTransform: "uppercase", letterSpacing: "0.12em",
+            }}>
+              ⚡ Choose Your Trial
+            </div>
+            <h2 style={{ fontSize: 36, fontWeight: 900, fontFamily: "Poppins", marginBottom: 8 }}>
+              <span className="gradient-text">Subject Arsenal</span>
+            </h2>
+            <p style={{ color: "var(--text-muted)", fontSize: 15, maxWidth: 480 }}>
+              Six high-yield topics forged for maximum interview impact.
+            </p>
+          </div>
+
+          {loading ? (
+            <div style={{ display: "flex", gap: 16, alignItems: "center", padding: 40 }}>
+              <div className="spinner" />
+              <span style={{ color: "var(--text-muted)" }}>Summoning knowledge…</span>
+            </div>
+          ) : (
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+              gap: 20,
+            }}>
+              {subjects.map((s, i) => {
+                const meta = SUBJECT_META[s.name] ?? { icon: "📚", color: "linear-gradient(135deg,#1D62D3,#0D3A80)", desc: "" };
+                const isEven = i % 2 === 0;
+                return (
+                  <Link key={s.id} href={`/test/start?subject=${s.id}`} style={{ textDecoration: "none" }}>
+                    <div
+                      className="card card-hover fade-in-up"
+                      style={{
+                        padding: "28px 24px",
+                        animationDelay: `${i * 0.08}s`, opacity: 0,
+                        marginTop: isEven ? 0 : 20,
+                        overflow: "hidden",
+                        position: "relative",
+                      }}
+                    >
+                      {/* Subtle corner light */}
+                      <div style={{
+                        position: "absolute", top: -20, right: -20, width: 100, height: 100, borderRadius: "50%",
+                        background: "radial-gradient(circle, rgba(59,130,246,0.08), transparent 70%)",
+                        pointerEvents: "none",
+                      }} />
+
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 18 }}>
+                        <div className="subject-icon" style={{ background: meta.color }}>
+                          {meta.icon}
+                        </div>
+                        <span className="badge badge-secondary">{s.duration_minutes}m</span>
+                      </div>
+
+                      <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 6, fontFamily: "Poppins" }}>
+                        {s.name}
+                      </h3>
+                      <p style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 16, lineHeight: 1.6 }}>
+                        {meta.desc || s.description}
+                      </p>
+
+                      <div style={{
+                        display: "inline-flex", alignItems: "center", gap: 6,
+                        color: "#FBB724", fontSize: 13, fontWeight: 700,
+                      }}>
+                        Begin Trial →
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </section>
+
+        {/* ══════════════════════════════════════
+            FEATURES — RIGHT-biased layout
+            ══════════════════════════════════════ */}
+        <section style={{ padding: "80px 80px 80px 60px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
+
+            {/* LEFT — Feature cards */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              {[
+                { icon: "⏱", title: "Timed Tests", desc: "Real-interview pressure with configurable countdown timers and auto-submit." },
+                { icon: "📊", title: "Instant Analytics", desc: "Topic-wise breakdown, weak spot identification, and score trends after every test." },
+                { icon: "📤", title: "Dump Questions", desc: "Contribute questions via the wizard form or bulk-upload a CSV in seconds." },
+                { icon: "🚩", title: "Flag & Review", desc: "Flag tricky questions, review answers, track what you missed." },
+              ].map(({ icon, title, desc }, i) => (
+                <div
+                  key={title}
+                  className="card card-hover fade-in-up"
+                  style={{
+                    padding: "20px 22px",
+                    display: "flex", gap: 18, alignItems: "flex-start",
+                    animationDelay: `${i * 0.1}s`, opacity: 0,
+                    marginLeft: i % 2 === 1 ? 24 : 0,
+                  }}
+                >
+                  <div style={{
+                    width: 44, height: 44, borderRadius: 12, flexShrink: 0,
+                    background: i % 2 === 0 ? "rgba(29,98,211,0.18)" : "rgba(251,183,36,0.12)",
+                    border: `1px solid ${i % 2 === 0 ? "rgba(59,130,246,0.3)" : "rgba(251,183,36,0.25)"}`,
+                    display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20,
+                  }}>{icon}</div>
                   <div>
-                    <div style={{ fontWeight: 700, fontSize: 17 }}>{s.name}</div>
-                    <div style={{ fontSize: 12, color: "#64748b" }}>⏱ {s.duration_minutes} min test</div>
+                    <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 4, fontFamily: "Poppins" }}>{title}</div>
+                    <div style={{ fontSize: 13, color: "var(--text-muted)", lineHeight: 1.6 }}>{desc}</div>
                   </div>
                 </div>
-                <p style={{ fontSize: 13, color: "#64748b", marginBottom: 16, lineHeight: 1.5 }}>{s.description}</p>
-                <Link href={user ? `/test/start?subject=${s.id}` : "/auth/login"} className="btn btn-primary" style={{ width: "100%" }}>
-                  Take Test Now
+              ))}
+            </div>
+
+            {/* RIGHT — Title + CTA */}
+            <div style={{ textAlign: "right" }}>
+              <div style={{
+                display: "inline-block", padding: "4px 14px", borderRadius: 20, marginBottom: 14,
+                background: "rgba(29,98,211,0.12)", border: "1px solid rgba(59,130,246,0.3)",
+                fontSize: 11, fontWeight: 700, color: "#93C5FD", textTransform: "uppercase", letterSpacing: "0.12em",
+              }}>
+                ⚡ Odin-Approved
+              </div>
+              <h2 style={{ fontSize: 36, fontWeight: 900, fontFamily: "Poppins", lineHeight: 1.2, marginBottom: 16 }}>
+                Built for <br />
+                <span className="gradient-text">Peak Performance</span>
+              </h2>
+              <p style={{ color: "var(--text-muted)", fontSize: 15, lineHeight: 1.8, marginBottom: 32, textAlign: "right" }}>
+                Every feature is forged in Asgard to simulate real interview conditions
+                and give you the sharpest feedback loop possible.
+              </p>
+              <div style={{ display: "flex", gap: 12, justifyContent: "flex-end" }}>
+                <Link href="/auth/register" className="btn btn-primary btn-lg">
+                  ⚡ Join ThorPrep
                 </Link>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section style={{ background: "white", padding: "64px 24px", borderTop: "1px solid #e2e8f0" }}>
-        <div className="container">
-          <h2 style={{ textAlign: "center", fontSize: 28, fontWeight: 800, marginBottom: 40 }}>Why PrepMaster?</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px,1fr))", gap: 24 }}>
-            {[
-              { icon: "⏱", title: "Timed Tests", desc: "Simulate real interview conditions with countdown timers and auto-submit." },
-              { icon: "📊", title: "Instant Analytics", desc: "See your score, accuracy, and topic-wise breakdown immediately after submission." },
-              { icon: "🎯", title: "Weak Area Detection", desc: "Identify which topics need more attention with personalized feedback." },
-              { icon: "📤", title: "Bulk Question Upload", desc: "Admins can upload questions via CSV/Excel for rapid question bank growth." },
-              { icon: "🔀", title: "Smart Question Mix", desc: "Tests are dynamically generated with balanced easy, medium, and hard questions." },
-              { icon: "📜", title: "Score History", desc: "Track your progress over time and see improvement trends." },
-            ].map(f => (
-              <div key={f.title} style={{ padding: 24, borderRadius: 12, background: "#f8fafc", border: "1px solid #e2e8f0" }}>
-                <div style={{ fontSize: 32, marginBottom: 12 }}>{f.icon}</div>
-                <div style={{ fontWeight: 700, marginBottom: 8 }}>{f.title}</div>
-                <div style={{ fontSize: 13, color: "#64748b", lineHeight: 1.6 }}>{f.desc}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      {!user && (
-        <section style={{
-          background: "linear-gradient(135deg,#4f46e5,#06b6d4)",
-          padding: "64px 24px",
-          textAlign: "center",
-          color: "white"
-        }}>
-          <h2 style={{ fontSize: 32, fontWeight: 800, marginBottom: 16 }}>Ready to start preparing?</h2>
-          <p style={{ opacity: 0.85, marginBottom: 28, fontSize: 16 }}>Join thousands of candidates acing their technical interviews</p>
-          <Link href="/auth/register" className="btn btn-lg" style={{ background: "white", color: "#4f46e5" }}>
-            Get Started Free →
-          </Link>
         </section>
-      )}
 
-      <footer style={{ textAlign: "center", padding: "24px", color: "#94a3b8", fontSize: 13, borderTop: "1px solid #e2e8f0" }}>
-        © 2026 PrepMaster. Built for interview success.
-      </footer>
+        {/* ══════════════════════════════════════
+            BOTTOM CTA — Bifrost strip
+            ══════════════════════════════════════ */}
+        <section style={{ padding: "60px 80px", position: "relative", overflow: "hidden" }}>
+          <div style={{
+            borderRadius: 20, padding: "48px 56px",
+            background: "linear-gradient(135deg, rgba(29,98,211,0.18) 0%, rgba(124,58,237,0.12) 50%, rgba(251,183,36,0.1) 100%)",
+            border: "1px solid rgba(59,130,246,0.25)",
+            display: "grid", gridTemplateColumns: "1fr auto",
+            alignItems: "center", gap: 40,
+            position: "relative", overflow: "hidden",
+          }}>
+            {/* Glow orb */}
+            <div style={{
+              position: "absolute", right: -80, top: -80, width: 400, height: 400, borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%)",
+              pointerEvents: "none",
+            }} />
+            <div>
+              <h2 style={{ fontSize: 28, fontWeight: 900, fontFamily: "Poppins", marginBottom: 8 }}>
+                Ready to be <span className="gradient-text">Unstoppable</span>?
+              </h2>
+              <p style={{ color: "var(--text-muted)", fontSize: 15 }}>
+                Join thousands of engineers who cracked their dream job with ThorPrep.
+              </p>
+            </div>
+            <Link href="/auth/register" className="btn btn-gold btn-xl" style={{ whiteSpace: "nowrap" }}>
+              🚀 Open Bifrost
+            </Link>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer style={{
+          textAlign: "center", padding: "28px 24px",
+          borderTop: "1px solid rgba(59,130,246,0.15)",
+          color: "var(--text-muted)", fontSize: 13,
+        }}>
+          <span className="gradient-text" style={{ fontWeight: 800, fontSize: 16 }}>⚡ ThorPrep</span>
+          <span style={{ margin: "0 12px", opacity: 0.3 }}>|</span>
+          Forged in Asgard · Built with ⚡ · 2026
+        </footer>
+      </main>
     </>
   );
 }

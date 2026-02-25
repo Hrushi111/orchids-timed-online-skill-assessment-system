@@ -23,6 +23,7 @@ export default function TestStartPage() {
     if (authLoading) return;
     if (!user) { router.push("/auth/login"); return; }
     if (!subjectId) { router.push("/dashboard"); return; }
+
     const load = async () => {
       const [{ data: s }, { data: t }, { count }] = await Promise.all([
         supabase.from("subjects").select("*").eq("id", subjectId).single(),
@@ -43,79 +44,166 @@ export default function TestStartPage() {
   };
 
   if (loading || authLoading) return (
-    <><Navbar />
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "60vh" }}>
-      <div style={{ textAlign: "center", color: "#94a3b8" }}>Loading…</div>
-    </div></>
+    <>
+      <Navbar />
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "60vh", gap: 16 }}>
+        <div className="spinner" style={{ width: 48, height: 48 }} />
+        <span style={{ color: "var(--text-muted)" }}>Loading test details…</span>
+      </div>
+    </>
   );
+
+  const difficultyInfo: Record<string, { label: string; color: string; desc: string }> = {
+    mixed: { label: "Mixed", color: "#6366f1", desc: "Best for overall practice" },
+    easy: { label: "Easy", color: "#10b981", desc: "Build confidence first" },
+    medium: { label: "Medium", color: "#f59e0b", desc: "Standard interview level" },
+    hard: { label: "Hard", color: "#ef4444", desc: "Challenge yourself" },
+  };
 
   return (
     <>
       <Navbar />
-      <div style={{ minHeight: "calc(100vh - 64px)", background: "linear-gradient(135deg,#f8fafc,#ede9fe)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
-        <div className="card fade-in" style={{ width: "100%", maxWidth: 520, padding: 36 }}>
-          <Link href="/dashboard" style={{ color: "#64748b", fontSize: 14, textDecoration: "none", display: "flex", alignItems: "center", gap: 4, marginBottom: 24 }}>
+      <div style={{
+        minHeight: "calc(100vh - 68px)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "40px 24px",
+      }}>
+        {/* Glow */}
+        <div style={{
+          position: "fixed", top: "30%", left: "50%", transform: "translateX(-50%)",
+          width: 500, height: 400, borderRadius: "50%",
+          background: "radial-gradient(ellipse, rgba(99,102,241,0.12) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }} />
+
+        <div className="card fade-in-up" style={{ width: "100%", maxWidth: 540, padding: "40px 36px", position: "relative" }}>
+          {/* Back */}
+          <Link href="/dashboard" style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            color: "var(--text-muted)", fontSize: 13, textDecoration: "none",
+            marginBottom: 28, transition: "color 0.2s",
+          }}
+            onMouseEnter={e => (e.currentTarget.style.color = "var(--primary-light)")}
+            onMouseLeave={e => (e.currentTarget.style.color = "var(--text-muted)")}
+          >
             ← Back to Dashboard
           </Link>
 
-          <div style={{ textAlign: "center", marginBottom: 28 }}>
-            <div style={{ fontSize: 48, marginBottom: 8 }}>🎯</div>
-            <h1 style={{ fontSize: 24, fontWeight: 800, marginBottom: 4 }}>{subject?.name} Test</h1>
-            <p style={{ color: "#64748b", fontSize: 14 }}>{subject?.description}</p>
-          </div>
-
-          <div style={{ background: "#f8fafc", borderRadius: 10, padding: 16, marginBottom: 24 }}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, textAlign: "center" }}>
-              {[
-                ["⏱", subject?.duration_minutes + "min", "Duration"],
-                ["❓", qCount, "Available Qs"],
-                ["🏷️", topics.length, "Topics"],
-              ].map(([icon, val, lbl]) => (
-                <div key={lbl as string}>
-                  <div style={{ fontSize: 18 }}>{icon}</div>
-                  <div style={{ fontWeight: 700, fontSize: 18 }}>{val}</div>
-                  <div style={{ fontSize: 11, color: "#94a3b8" }}>{lbl}</div>
-                </div>
-              ))}
+          {/* Subject Header */}
+          <div style={{ textAlign: "center", marginBottom: 32 }}>
+            <div style={{
+              width: 72, height: 72, borderRadius: 20, margin: "0 auto 16px",
+              background: "linear-gradient(135deg, rgba(99,102,241,0.3), rgba(6,182,212,0.2))",
+              border: "1px solid rgba(99,102,241,0.3)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: 36,
+              animation: "float 3s ease-in-out infinite",
+            }}>
+              🎯
             </div>
+            <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 8, fontFamily: "Poppins" }}>
+              {subject?.name} Test
+            </h1>
+            <p style={{ color: "var(--text-muted)", fontSize: 14, lineHeight: 1.6 }}>
+              {subject?.description}
+            </p>
           </div>
 
+          {/* Quick Stats */}
+          <div style={{
+            display: "grid", gridTemplateColumns: "1fr 1fr 1fr",
+            gap: 12, marginBottom: 28,
+          }}>
+            {[
+              { icon: "⏱", val: `${subject?.duration_minutes}m`, lbl: "Duration" },
+              { icon: "❓", val: qCount, lbl: "Questions" },
+              { icon: "🏷️", val: topics.length, lbl: "Topics" },
+            ].map(({ icon, val, lbl }) => (
+              <div key={lbl} style={{
+                textAlign: "center",
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid var(--border)",
+                borderRadius: 12,
+                padding: "14px 8px",
+              }}>
+                <div style={{ fontSize: 20, marginBottom: 4 }}>{icon}</div>
+                <div style={{ fontWeight: 700, fontSize: 20, fontFamily: "Poppins" }}>{val}</div>
+                <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 2 }}>{lbl}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Topics */}
           {topics.length > 0 && (
-            <div style={{ marginBottom: 20 }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: "#64748b", marginBottom: 8 }}>TOPICS COVERED</div>
+            <div style={{ marginBottom: 24 }}>
+              <div className="label">Topics Covered</div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                 {topics.map(t => (
-                  <span key={t.id} className="badge badge-primary" style={{ fontSize: 12 }}>{t.name}</span>
+                  <span key={t.id} className="badge badge-primary">{t.name}</span>
                 ))}
               </div>
             </div>
           )}
 
+          {/* Questions select */}
           <div className="form-group">
             <label className="label">Number of Questions</label>
-            <select className="select" value={numQuestions} onChange={e => setNumQuestions(Number(e.target.value))}>
+            <select
+              className="select"
+              value={numQuestions}
+              onChange={e => setNumQuestions(Number(e.target.value))}
+            >
               {[5, 10, 15, 20].filter(n => n <= qCount).map(n => (
                 <option key={n} value={n}>{n} questions</option>
               ))}
-              {qCount > 0 && qCount < 5 && <option value={qCount}>{qCount} questions (all available)</option>}
+              {qCount > 0 && qCount < 5 && (
+                <option value={qCount}>{qCount} questions (all available)</option>
+              )}
             </select>
           </div>
 
+          {/* Difficulty select */}
           <div className="form-group">
-            <label className="label">Difficulty</label>
-            <select className="select" value={difficulty} onChange={e => setDifficulty(e.target.value)}>
-              <option value="mixed">Mixed (Easy + Medium + Hard)</option>
-              <option value="easy">Easy only</option>
-              <option value="medium">Medium only</option>
-              <option value="hard">Hard only</option>
-            </select>
+            <label className="label">Difficulty Level</label>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              {Object.entries(difficultyInfo).map(([val, info]) => (
+                <button
+                  key={val}
+                  type="button"
+                  onClick={() => setDifficulty(val)}
+                  style={{
+                    padding: "12px 14px",
+                    borderRadius: 10,
+                    border: `1.5px solid ${difficulty === val ? info.color : "var(--border)"}`,
+                    background: difficulty === val ? `${info.color}18` : "rgba(255,255,255,0.03)",
+                    cursor: "pointer",
+                    textAlign: "left",
+                    transition: "all 0.2s",
+                    color: difficulty === val ? info.color : "var(--text-secondary)",
+                  }}
+                >
+                  <div style={{ fontSize: 13, fontWeight: 700 }}>{info.label}</div>
+                  <div style={{ fontSize: 11, opacity: 0.8, marginTop: 2 }}>{info.desc}</div>
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div style={{ background: "#fef3c7", borderRadius: 8, padding: 12, fontSize: 13, color: "#92400e", marginBottom: 20 }}>
-            ⚠️ Once started, the timer begins immediately. The test will auto-submit when time runs out.
+          {/* Warning */}
+          <div className="alert alert-warning" style={{ marginBottom: 24 }}>
+            <span>⚠️</span>
+            <div>Once started, the timer begins immediately. The test will auto-submit when time runs out.</div>
           </div>
 
-          <button className="btn btn-primary btn-lg" style={{ width: "100%" }} onClick={startTest} disabled={qCount === 0}>
+          {/* Start button */}
+          <button
+            className="btn btn-primary btn-lg"
+            style={{ width: "100%", fontSize: 16 }}
+            onClick={startTest}
+            disabled={qCount === 0}
+          >
             {qCount === 0 ? "No questions available" : "🚀 Start Test Now"}
           </button>
         </div>

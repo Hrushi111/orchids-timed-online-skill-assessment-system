@@ -3,7 +3,6 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { supabase, Question } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth-context";
-import Navbar from "@/components/Navbar";
 
 export default function TakeTestPage() {
   const { user, loading: authLoading } = useAuth();
@@ -23,29 +22,22 @@ export default function TakeTestPage() {
   const [submitting, setSubmitting] = useState(false);
   const [subject, setSubject] = useState<any>(null);
   const [flagged, setFlagged] = useState<Set<string>>(new Set());
+  const [showConfirm, setShowConfirm] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const submittedRef = useRef(false);
 
-  // Generate balanced questions from pool
   const generateQuestions = (pool: Question[], total: number, diff: string): Question[] => {
     let filtered = diff === "mixed" ? pool : pool.filter(q => q.difficulty === diff);
     if (filtered.length === 0) filtered = pool;
-    // Shuffle
     const shuffled = [...filtered].sort(() => Math.random() - 0.5);
     if (diff !== "mixed") return shuffled.slice(0, total);
-    // Balance: ~40% easy, 40% medium, 20% hard
     const easy = shuffled.filter(q => q.difficulty === "easy");
     const medium = shuffled.filter(q => q.difficulty === "medium");
     const hard = shuffled.filter(q => q.difficulty === "hard");
     const easyCount = Math.round(total * 0.4);
     const hardCount = Math.max(1, Math.round(total * 0.2));
     const medCount = total - easyCount - hardCount;
-    const selected = [
-      ...easy.slice(0, easyCount),
-      ...medium.slice(0, medCount),
-      ...hard.slice(0, hardCount),
-    ];
-    // Fill if not enough
+    const selected = [...easy.slice(0, easyCount), ...medium.slice(0, medCount), ...hard.slice(0, hardCount)];
     const remaining = shuffled.filter(q => !selected.includes(q));
     while (selected.length < total && remaining.length > 0) selected.push(remaining.shift()!);
     return selected.slice(0, total).sort(() => Math.random() - 0.5);
@@ -56,6 +48,7 @@ export default function TakeTestPage() {
     submittedRef.current = true;
     if (timerRef.current) clearInterval(timerRef.current);
     setSubmitting(true);
+    setShowConfirm(false);
 
     const timeTaken = totalTime - timeLeft;
     let score = 0;
@@ -112,7 +105,6 @@ export default function TakeTestPage() {
     load();
   }, [authLoading, user]);
 
-  // Timer
   useEffect(() => {
     if (loading || submittedRef.current) return;
     timerRef.current = setInterval(() => {
@@ -128,12 +120,8 @@ export default function TakeTestPage() {
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [loading]);
 
-  // Prevent back/refresh
   useEffect(() => {
-    const handler = (e: BeforeUnloadEvent) => {
-      e.preventDefault();
-      e.returnValue = "";
-    };
+    const handler = (e: BeforeUnloadEvent) => { e.preventDefault(); e.returnValue = ""; };
     window.addEventListener("beforeunload", handler);
     return () => window.removeEventListener("beforeunload", handler);
   }, []);
@@ -148,97 +136,221 @@ export default function TakeTestPage() {
   const timerPct = totalTime > 0 ? (timeLeft / totalTime) * 100 : 0;
   const answered = Object.keys(answers).length;
 
+  // Circular timer math
+  const circleR = 36;
+  const circleCirc = 2 * Math.PI * circleR;
+  const circleDash = circleCirc * (timerPct / 100);
+
   if (loading || authLoading) return (
-    <><Navbar />
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "60vh", flexDirection: "column", gap: 16 }}>
-      <div style={{ fontSize: 32 }}>⚙️</div>
-      <div style={{ color: "#64748b" }}>Generating your test…</div>
-    </div></>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", gap: 20, background: "var(--bg)" }}>
+      <div className="spinner" style={{ width: 52, height: 52, borderWidth: 3 }} />
+      <div style={{ color: "var(--text-muted)", fontSize: 15 }}>Generating your personalized test…</div>
+    </div>
   );
 
   const q = questions[current];
 
+  const timerColor = timeLeft <= 60 ? "#ef4444" : timeLeft <= 120 ? "#f59e0b" : "#10b981";
+
   return (
-    <div style={{ background: "#f8fafc", minHeight: "100vh" }}>
-      {/* Top bar */}
-      <div style={{ background: "white", borderBottom: "1px solid #e2e8f0", padding: "0 24px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 50 }}>
-        <div style={{ fontWeight: 700, fontSize: 16 }}>⚡ {subject?.name} Test</div>
-        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+    <div style={{ background: "var(--bg)", minHeight: "100vh" }}>
+      {/* ── Top bar ── */}
+      <div style={{
+        background: "rgba(10,10,20,0.95)",
+        backdropFilter: "blur(20px)",
+        borderBottom: "1px solid var(--border)",
+        padding: "0 28px",
+        height: 64,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        position: "sticky",
+        top: 0,
+        zIndex: 100,
+      }}>
+        {/* Subject info */}
+        <div>
+          <div className="nav-logo" style={{ fontSize: 16 }}>⚡ {subject?.name}</div>
+          <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 1 }}>Timed Assessment</div>
+        </div>
+
+        {/* Progress + Timer */}
+        <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
+          {/* Answered count */}
           <div style={{ textAlign: "center" }}>
-            <div style={{ fontSize: 11, color: "#94a3b8", textTransform: "uppercase" }}>Progress</div>
-            <div style={{ fontWeight: 700 }}>{answered}/{questions.length}</div>
-          </div>
-          <div style={{ textAlign: "center" }}>
-            <div style={{ fontSize: 11, color: "#94a3b8", textTransform: "uppercase" }}>Time Left</div>
-            <div className={`${timerClass}`} style={{ fontWeight: 800, fontSize: 20, fontFamily: "monospace" }}>
-              {formatTime(timeLeft)}
+            <div style={{ fontSize: 11, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.07em" }}>Answered</div>
+            <div style={{ fontWeight: 700, fontSize: 16, fontFamily: "Poppins" }}>
+              <span style={{ color: "#10b981" }}>{answered}</span>
+              <span style={{ color: "var(--text-muted)" }}>/{questions.length}</span>
             </div>
           </div>
+
+          {/* Circular Timer */}
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontSize: 11, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 2 }}>Time Left</div>
+            <div className="timer-circle" style={{ width: 54, height: 54 }}>
+              <svg width="54" height="54" viewBox="0 0 88 88">
+                <circle cx="44" cy="44" r={circleR} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="6" />
+                <circle
+                  cx="44" cy="44" r={circleR}
+                  fill="none" stroke={timerColor} strokeWidth="6"
+                  strokeDasharray={`${circleDash} ${circleCirc}`}
+                  strokeLinecap="round"
+                  style={{ transition: "stroke-dasharray 1s linear, stroke 0.5s" }}
+                />
+              </svg>
+              <div className={`timer-circle-text ${timerClass}`} style={{ fontSize: 11, fontWeight: 800 }}>
+                {formatTime(timeLeft)}
+              </div>
+            </div>
+          </div>
+
+          {/* Submit */}
           <button
             className="btn btn-primary btn-sm"
-            onClick={() => { if (confirm("Submit test now?")) handleSubmit(false); }}
+            onClick={() => setShowConfirm(true)}
             disabled={submitting}
           >
-            {submitting ? "Submitting…" : "Submit Test"}
+            {submitting ? <>
+              <div className="spinner" style={{ width: 14, height: 14, borderWidth: 2 }} />
+              Submitting…
+            </> : "Submit Test"}
           </button>
         </div>
       </div>
 
-      {/* Timer bar */}
-      <div className="progress" style={{ borderRadius: 0, height: 4 }}>
-        <div className="progress-bar" style={{ width: `${timerPct}%`, background: timeLeft <= 60 ? "#ef4444" : timeLeft <= 120 ? "#f97316" : "#10b981" }} />
+      {/* Progress bar */}
+      <div className="progress" style={{ borderRadius: 0, height: 3 }}>
+        <div className="progress-bar" style={{
+          width: `${timerPct}%`,
+          background: timerColor,
+          transition: "width 1s linear, background 0.5s",
+        }} />
       </div>
 
+      {/* Timer warning */}
       {timeLeft <= 120 && !submittedRef.current && (
-        <div className="alert alert-error" style={{ borderRadius: 0, margin: 0, textAlign: "center" }}>
-          ⚠️ {timeLeft <= 60 ? "Less than 1 minute remaining!" : "2 minutes remaining — wrap up!"}
+        <div className="alert" style={{
+          borderRadius: 0, margin: 0, textAlign: "center", justifyContent: "center",
+          background: timeLeft <= 60 ? "rgba(239,68,68,0.15)" : "rgba(245,158,11,0.12)",
+          color: timeLeft <= 60 ? "#f87171" : "#fbbf24",
+          border: "none",
+          borderBottom: `1px solid ${timeLeft <= 60 ? "rgba(239,68,68,0.3)" : "rgba(245,158,11,0.25)"}`,
+        }}>
+          {timeLeft <= 60
+            ? "🚨 Less than 1 minute remaining! Submit soon!"
+            : "⏰ 2 minutes remaining — start wrapping up!"}
         </div>
       )}
 
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "28px 24px", display: "grid", gridTemplateColumns: "1fr 260px", gap: 24 }}>
-        {/* Question area */}
-        <div>
-          <div className="card fade-in" style={{ padding: 28 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-              <span style={{ fontSize: 13, color: "#64748b", fontWeight: 600 }}>Question {current + 1} of {questions.length}</span>
-              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                <span className={`badge badge-${q.difficulty}`}>{q.difficulty}</span>
-                <button
-                  style={{ background: "none", border: "none", cursor: "pointer", fontSize: 18, opacity: flagged.has(q.id) ? 1 : 0.4 }}
-                  title="Flag for review"
-                  onClick={() => setFlagged(f => { const n = new Set(f); n.has(q.id) ? n.delete(q.id) : n.add(q.id); return n; })}
-                >🚩</button>
-              </div>
+      {/* Main layout */}
+      <div style={{
+        maxWidth: 1000, margin: "0 auto", padding: "28px 24px",
+        display: "grid", gridTemplateColumns: "1fr 270px", gap: 24,
+      }}>
+        {/* ── Question Card ── */}
+        <div className="card fade-in" key={current} style={{ padding: 32 }}>
+          {/* Header row */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 22 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <span style={{
+                width: 36, height: 36, borderRadius: "50%",
+                background: "linear-gradient(135deg, var(--primary), #8b5cf6)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontWeight: 800, fontSize: 14, color: "white", fontFamily: "Poppins",
+                flexShrink: 0,
+              }}>{current + 1}</span>
+              <span style={{ fontSize: 13, color: "var(--text-muted)", fontWeight: 500 }}>
+                of {questions.length} questions
+              </span>
             </div>
-
-            <p style={{ fontSize: 17, fontWeight: 600, lineHeight: 1.6, marginBottom: 24 }}>{q.question_text}</p>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {(["A", "B", "C", "D"] as const).map(opt => {
-                const val = q[`option_${opt.toLowerCase()}` as "option_a" | "option_b" | "option_c" | "option_d"];
-                const selected = answers[q.id] === opt;
-                return (
-                  <div key={opt} className={`option-item ${selected ? "selected" : ""}`} onClick={() => setAnswers(prev => ({ ...prev, [q.id]: opt }))}>
-                    <span className="option-letter">{opt}</span>
-                    <span style={{ fontSize: 15 }}>{val}</span>
-                  </div>
-                );
-              })}
+            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <span className={`badge badge-${q.difficulty}`}>{q.difficulty}</span>
+              <button
+                title="Flag for review"
+                onClick={() => setFlagged(f => {
+                  const n = new Set(f);
+                  n.has(q.id) ? n.delete(q.id) : n.add(q.id);
+                  return n;
+                })}
+                style={{
+                  background: flagged.has(q.id) ? "rgba(239,68,68,0.15)" : "rgba(255,255,255,0.07)",
+                  border: flagged.has(q.id) ? "1px solid rgba(239,68,68,0.4)" : "1px solid var(--border)",
+                  borderRadius: 8, padding: "5px 10px", cursor: "pointer",
+                  fontSize: 14, color: flagged.has(q.id) ? "#f87171" : "var(--text-muted)",
+                  transition: "all 0.2s",
+                }}
+              >
+                🚩 {flagged.has(q.id) ? "Flagged" : "Flag"}
+              </button>
             </div>
+          </div>
 
-            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 24, paddingTop: 20, borderTop: "1px solid #e2e8f0" }}>
-              <button className="btn btn-secondary" disabled={current === 0} onClick={() => setCurrent(c => c - 1)}>← Previous</button>
-              <button className="btn btn-secondary" onClick={() => setAnswers(prev => { const n = { ...prev }; delete n[q.id]; return n; })} disabled={!answers[q.id]}>Clear</button>
-              <button className="btn btn-primary" disabled={current === questions.length - 1} onClick={() => setCurrent(c => c + 1)}>Next →</button>
-            </div>
+          {/* Question text */}
+          <p style={{ fontSize: 17, fontWeight: 600, lineHeight: 1.75, marginBottom: 28, color: "var(--text)" }}>
+            {q.question_text}
+          </p>
+
+          {/* Options */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {(["A", "B", "C", "D"] as const).map(opt => {
+              const val = q[`option_${opt.toLowerCase()}` as "option_a" | "option_b" | "option_c" | "option_d"];
+              const selected = answers[q.id] === opt;
+              return (
+                <div
+                  key={opt}
+                  className={`option-item ${selected ? "selected" : ""}`}
+                  onClick={() => setAnswers(prev => ({ ...prev, [q.id]: opt }))}
+                >
+                  <span className="option-letter">{opt}</span>
+                  <span style={{ fontSize: 15, lineHeight: 1.5 }}>{val}</span>
+                  {selected && (
+                    <span style={{ marginLeft: "auto", fontSize: 18 }}>✓</span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Navigation */}
+          <div style={{
+            display: "flex", justifyContent: "space-between", alignItems: "center",
+            marginTop: 28, paddingTop: 22,
+            borderTop: "1px solid var(--border)",
+          }}>
+            <button
+              className="btn btn-secondary"
+              disabled={current === 0}
+              onClick={() => setCurrent(c => c - 1)}
+            >
+              ← Previous
+            </button>
+            <button
+              className="btn btn-secondary btn-sm"
+              onClick={() => setAnswers(prev => { const n = { ...prev }; delete n[q.id]; return n; })}
+              disabled={!answers[q.id]}
+              style={{ opacity: answers[q.id] ? 1 : 0.4 }}
+            >
+              Clear Answer
+            </button>
+            <button
+              className="btn btn-primary"
+              disabled={current === questions.length - 1}
+              onClick={() => setCurrent(c => c + 1)}
+            >
+              Next →
+            </button>
           </div>
         </div>
 
-        {/* Question navigator */}
+        {/* ── Question Navigator ── */}
         <div>
-          <div className="card" style={{ padding: 16, position: "sticky", top: 76 }}>
-            <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 12 }}>Question Navigator</div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 6, marginBottom: 16 }}>
+          <div className="card" style={{ padding: 20, position: "sticky", top: 76 }}>
+            <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 14, fontFamily: "Poppins" }}>
+              Question Navigator
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 7, marginBottom: 18 }}>
               {questions.map((qq, i) => {
                 const ans = answers[qq.id];
                 const isCur = i === current;
@@ -248,38 +360,87 @@ export default function TakeTestPage() {
                     key={qq.id}
                     onClick={() => setCurrent(i)}
                     style={{
-                      width: 36, height: 36, borderRadius: 8, border: `2px solid ${isCur ? "#4f46e5" : ans ? "#10b981" : "#e2e8f0"}`,
-                      background: isCur ? "#4f46e5" : ans ? "#d1fae5" : "white",
-                      color: isCur ? "white" : ans ? "#065f46" : "#64748b",
-                      fontWeight: 700, fontSize: 13, cursor: "pointer", position: "relative"
+                      width: "100%", aspectRatio: "1", borderRadius: 8,
+                      border: `2px solid ${isCur ? "var(--primary)" : ans ? "#10b981" : "var(--border)"}`,
+                      background: isCur ? "var(--primary)" : ans ? "rgba(16,185,129,0.15)" : "rgba(255,255,255,0.03)",
+                      color: isCur ? "white" : ans ? "#34d399" : "var(--text-muted)",
+                      fontWeight: 700, fontSize: 12, cursor: "pointer",
+                      position: "relative",
+                      transition: "all 0.15s ease",
+                      fontFamily: "Poppins",
                     }}
                   >
                     {i + 1}
-                    {isFlag && <span style={{ position: "absolute", top: -4, right: -4, fontSize: 10 }}>🚩</span>}
+                    {isFlag && (
+                      <span style={{ position: "absolute", top: -3, right: -3, fontSize: 9 }}>🚩</span>
+                    )}
                   </button>
                 );
               })}
             </div>
-            <div style={{ fontSize: 12, color: "#64748b", display: "flex", flexDirection: "column", gap: 4 }}>
-              <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                <div style={{ width: 12, height: 12, borderRadius: 3, background: "#d1fae5", border: "2px solid #10b981" }} />
-                Answered ({answered})
-              </div>
-              <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                <div style={{ width: 12, height: 12, borderRadius: 3, background: "white", border: "2px solid #e2e8f0" }} />
-                Unanswered ({questions.length - answered})
-              </div>
-              <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                <span style={{ fontSize: 12 }}>🚩</span>
-                Flagged ({flagged.size})
-              </div>
+
+            {/* Legend */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 7, fontSize: 12, color: "var(--text-muted)" }}>
+              {[
+                { color: "#10b981", border: "#10b981", label: `Answered (${answered})` },
+                { color: "rgba(255,255,255,0.03)", border: "var(--border)", label: `Unanswered (${questions.length - answered})` },
+                { color: "var(--primary)", border: "var(--primary)", label: "Current" },
+              ].map(({ color, border, label }) => (
+                <div key={label} style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  <div style={{ width: 12, height: 12, borderRadius: 3, background: color, border: `2px solid ${border}`, flexShrink: 0 }} />
+                  {label}
+                </div>
+              ))}
+              {flagged.size > 0 && (
+                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  <span style={{ fontSize: 12 }}>🚩</span>
+                  Flagged ({flagged.size})
+                </div>
+              )}
             </div>
-            <button className="btn btn-primary" style={{ width: "100%", marginTop: 16 }} onClick={() => { if (confirm("Submit test now?")) handleSubmit(false); }} disabled={submitting}>
+
+            <button
+              className="btn btn-primary"
+              style={{ width: "100%", marginTop: 18 }}
+              onClick={() => setShowConfirm(true)}
+              disabled={submitting}
+            >
               {submitting ? "Submitting…" : "Submit Test"}
             </button>
+
+            {answered < questions.length && (
+              <div style={{ fontSize: 11, textAlign: "center", color: "var(--text-muted)", marginTop: 8 }}>
+                {questions.length - answered} question{questions.length - answered !== 1 ? "s" : ""} unanswered
+              </div>
+            )}
           </div>
         </div>
       </div>
+
+      {/* ── Submit Confirmation Modal ── */}
+      {showConfirm && (
+        <div className="modal-overlay" onClick={() => setShowConfirm(false)}>
+          <div className="modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 420, textAlign: "center" }}>
+            <div style={{ fontSize: 52, marginBottom: 16 }}>📋</div>
+            <h2 className="modal-title" style={{ textAlign: "center", marginBottom: 8 }}>Submit Test?</h2>
+            <p style={{ color: "var(--text-muted)", fontSize: 14, marginBottom: 24, lineHeight: 1.6 }}>
+              You have answered <strong style={{ color: "#10b981" }}>{answered}</strong> out of{" "}
+              <strong>{questions.length}</strong> questions.
+              {answered < questions.length && (
+                <><br /><span style={{ color: "#f87171" }}>⚠️ {questions.length - answered} unanswered will be marked wrong.</span></>
+              )}
+            </p>
+            <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
+              <button className="btn btn-secondary" onClick={() => setShowConfirm(false)}>
+                Keep Reviewing
+              </button>
+              <button className="btn btn-primary" onClick={() => handleSubmit(false)} disabled={submitting}>
+                {submitting ? "Submitting…" : "Yes, Submit →"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
