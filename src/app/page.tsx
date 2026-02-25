@@ -129,7 +129,7 @@ export default function HomePage() {
             <div style={{
               width: "100%",
               aspectRatio: "1/1",
-              background: "white",
+              background: "var(--bg-card)",
               borderRadius: "24px",
               border: "1px solid var(--border)",
               boxShadow: "var(--shadow-lg)",
@@ -166,7 +166,7 @@ export default function HomePage() {
           ) : subjects.length === 0 ? (
             <div style={{
               padding: "60px 20px", textAlign: "center", borderRadius: 16,
-              background: "white", border: "1px dashed var(--border)"
+              background: "var(--bg-card)", border: "1px dashed var(--border)"
             }}>
               <div style={{ fontSize: 40, marginBottom: 16 }}>🛡️</div>
               <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>The Arsenal is Locked</h3>
