@@ -50,9 +50,9 @@ export default function Navbar() {
         ⚡ ThorPrep
       </Link>
 
-      {/* Center Nav Links */}
+      {/* Center Nav Links (Hidden on Mobile) */}
       {user && (
-        <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
+        <div className="mobile-hide" style={{ display: "flex", gap: 4, alignItems: "center" }}>
           {navLinks.map((link) => {
             const active = pathname === link.href || pathname.startsWith(link.href + "/");
             const isDump = link.href === "/questions/submit";

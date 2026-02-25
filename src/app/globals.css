@@ -57,6 +57,20 @@
   --radius: 14px;
   --radius-sm: 8px;
   --radius-lg: 20px;
+  --container-px: 80px;
+  --container-px-mobile: 24px;
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --container-px: 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --container-px: 24px;
+  }
 }
 
 /* ============================================
@@ -112,6 +126,32 @@ body::before {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #83e2f6;
+}
+
+/* Responsive Layout Utils */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--container-px);
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .section-padding {
+    padding: 40px var(--container-px) !important;
+  }
+
+  .mobile-stack {
+    grid-template-columns: 1fr !important;
+  }
+
+  .mobile-hide {
+    display: none !important;
+  }
+
+  .mobile-text-center {
+    text-align: center !important;
+  }
 }
 
 /* ============================================

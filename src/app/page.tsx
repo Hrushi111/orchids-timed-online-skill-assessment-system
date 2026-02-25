@@ -55,17 +55,20 @@ export default function HomePage() {
         {/* ══════════════════════════════════════
             HERO — Text LEFT · Mjolnir RIGHT
             ══════════════════════════════════════ */}
-        <section style={{
+        <section className="container mobile-stack section-padding" style={{
           minHeight: "calc(100vh - 68px)",
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
           alignItems: "center",
-          padding: "60px 60px 60px 80px",
           gap: 40,
           position: "relative",
         }}>
           {/* LEFT — Headline */}
-          <div style={{ animation: visible ? "slideInLeft 0.7s ease forwards" : "none", opacity: visible ? 1 : 0 }}>
+          <div style={{
+            animation: visible ? "slideInLeft 0.7s ease forwards" : "none",
+            opacity: visible ? 1 : 0,
+            zIndex: 10
+          }} className="mobile-text-center">
             {/* Status pill */}
             <div style={{
               display: "inline-flex", alignItems: "center", gap: 8,
@@ -80,7 +83,7 @@ export default function HomePage() {
             </div>
 
             <h1 style={{
-              fontSize: "clamp(36px, 4.5vw, 64px)",
+              fontSize: "clamp(36px, 8vw, 64px)",
               fontWeight: 900, lineHeight: 1.1,
               fontFamily: "Poppins", marginBottom: 22,
             }}>
@@ -94,6 +97,7 @@ export default function HomePage() {
             <p style={{
               fontSize: 17, color: "var(--text-secondary)", lineHeight: 1.8,
               marginBottom: 36, maxWidth: 460,
+              marginLeft: "auto", marginRight: "auto"
             }}>
               Crimson-grade interview prep. Timed quizzes, instant analytics,
               and divine feedback — engineered to make you{" "}
@@ -101,7 +105,7 @@ export default function HomePage() {
             </p>
 
             {/* CTA buttons */}
-            <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 48 }}>
+            <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 48, justifyContent: "inherit" }}>
               <Link href="/auth/register" className="btn btn-primary btn-xl" style={{ minWidth: 180 }}>
                 ⚡ Prove Worthy
               </Link>
@@ -111,24 +115,22 @@ export default function HomePage() {
             </div>
 
             {/* Stats row */}
-            <div style={{ display: "flex", gap: 32 }}>
+            <div className="mobile-hide" style={{ display: "flex", gap: 32, justifyContent: "inherit" }}>
               {[
                 { val: "500+", lbl: "Questions", icon: "❓" },
                 { val: "6", lbl: "Subjects", icon: "📚" },
                 { val: "100%", lbl: "Free", icon: "🆓" },
               ].map(({ val, lbl, icon }) => (
                 <div key={lbl} style={{ textAlign: "left" }}>
-                  <div style={{ fontSize: 26, fontWeight: 900, fontFamily: "Poppins", color: "#FCD34D" }}>
-                    {icon} {val}
-                  </div>
-                  <div style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 2 }}>{lbl}</div>
+                  <div style={{ fontSize: 24, fontWeight: 900, color: "var(--text)" }}>{val}</div>
+                  <div style={{ fontSize: 13, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.1em" }}>{lbl}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* RIGHT — Mjolnir ring display */}
-          <div style={{
+          {/* RIGHT — Mjolnir ring display (HIDDEN ON MOBILE) */}
+          <div className="mobile-hide" style={{
             display: "flex", alignItems: "center", justifyContent: "center",
             animation: visible ? "slideInRight 0.7s ease forwards" : "none",
             opacity: visible ? 1 : 0,
@@ -208,54 +210,69 @@ export default function HomePage() {
         {/* ══════════════════════════════════════
             SUBJECTS — Cards
             ══════════════════════════════════════ */}
-        <section style={{ padding: "80px 60px 80px 80px" }}>
+        <section className="container section-padding">
           {/* Section header */}
-          <div style={{ marginBottom: 48 }}>
+          <div style={{ marginBottom: 48 }} className="mobile-text-center">
             <div style={{
               display: "inline-block", padding: "4px 14px", borderRadius: 20, marginBottom: 12,
-              background: "rgba(251,183,36,0.1)", border: "1px solid rgba(251,183,36,0.22)",
-              fontSize: 11, fontWeight: 700, color: "#FBB724", textTransform: "uppercase", letterSpacing: "0.12em",
+              background: "rgba(131,226,246,0.08)", border: "1px solid rgba(131,226,246,0.22)",
+              fontSize: 11, fontWeight: 700, color: "#83e2f6", textTransform: "uppercase", letterSpacing: "0.12em",
             }}>
               ⚡ Choose Your Trial
             </div>
-            <h2 style={{ fontSize: 36, fontWeight: 900, fontFamily: "Poppins", marginBottom: 8 }}>
+            <h2 style={{ fontSize: "clamp(28px, 5vw, 36px)", fontWeight: 900, fontFamily: "Poppins", marginBottom: 8 }}>
               <span className="gradient-text">Subject Arsenal</span>
             </h2>
-            <p style={{ color: "var(--text-muted)", fontSize: 15, maxWidth: 480 }}>
-              Six high-yield topics forged for maximum interview impact.
+            <p style={{ color: "var(--text-muted)", fontSize: 15, maxWidth: 480, margin: "0 auto" }}>
+              High-yield topics forged for maximum interview impact.
             </p>
           </div>
 
           {loading ? (
-            <div style={{ display: "flex", gap: 16, alignItems: "center", padding: 40 }}>
+            <div style={{ display: "flex", gap: 16, alignItems: "center", padding: "40px 0", justifyContent: "center" }}>
               <div className="spinner" />
               <span style={{ color: "var(--text-muted)" }}>Summoning knowledge…</span>
+            </div>
+          ) : subjects.length === 0 ? (
+            <div style={{
+              padding: "60px 20px", textAlign: "center", borderRadius: 16,
+              background: "rgba(255,255,255,0.03)", border: "1px dashed rgba(131,226,246,0.2)"
+            }}>
+              <div style={{ fontSize: 40, marginBottom: 16 }}>🛡️</div>
+              <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>The Arsenal is Locked</h3>
+              <p style={{ color: "var(--text-muted)", marginBottom: 24, maxWidth: 400, margin: "0 auto 24px" }}>
+                We couldn't retrieve the trials from Asgard. Ensure your connection is active or try summoning manually.
+              </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="btn btn-secondary btn-sm"
+              >
+                🔄 Refresh Connection
+              </button>
             </div>
           ) : (
             <div style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-              gap: 20,
+              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+              gap: 24,
             }}>
               {subjects.map((s, i) => {
-                const meta = SUBJECT_META[s.name] ?? { icon: "📚", color: "linear-gradient(135deg,#1D62D3,#0D3A80)", desc: "" };
-                const isEven = i % 2 === 0;
+                const meta = SUBJECT_META[s.name] ?? { icon: "📚", color: "linear-gradient(135deg,#671722,#4A1018)", desc: "" };
                 return (
                   <Link key={s.id} href={`/test/start?subject=${s.id}`} style={{ textDecoration: "none" }}>
                     <div
                       className="card card-hover fade-in-up"
                       style={{
-                        padding: "28px 24px",
-                        animationDelay: `${i * 0.08}s`, opacity: 0,
-                        marginTop: isEven ? 0 : 20,
+                        padding: "32px 28px",
+                        animationDelay: `${i * 0.1}s`, opacity: 0,
                         overflow: "hidden",
                         position: "relative",
+                        height: "100%",
                       }}
                     >
-                      {/* Subtle corner light */}
                       <div style={{
                         position: "absolute", top: -20, right: -20, width: 100, height: 100, borderRadius: "50%",
-                        background: "radial-gradient(circle, rgba(59,130,246,0.08), transparent 70%)",
+                        background: "radial-gradient(circle, rgba(131,226,246,0.06), transparent 70%)",
                         pointerEvents: "none",
                       }} />
 
@@ -263,21 +280,22 @@ export default function HomePage() {
                         <div className="subject-icon" style={{ background: meta.color }}>
                           {meta.icon}
                         </div>
-                        <span className="badge badge-secondary">{s.duration_minutes}m</span>
+                        <span className="badge badge-secondary" style={{ opacity: 0.8 }}>{s.duration_minutes}m</span>
                       </div>
 
-                      <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 6, fontFamily: "Poppins" }}>
+                      <h3 style={{ fontSize: 22, fontWeight: 800, marginBottom: 8, fontFamily: "Poppins" }}>
                         {s.name}
                       </h3>
-                      <p style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 16, lineHeight: 1.6 }}>
+                      <p style={{ fontSize: 14, color: "var(--text-muted)", marginBottom: 24, lineHeight: 1.6 }}>
                         {meta.desc || s.description}
                       </p>
 
                       <div style={{
+                        marginTop: "auto",
                         display: "inline-flex", alignItems: "center", gap: 6,
-                        color: "#FBB724", fontSize: 13, fontWeight: 700,
+                        color: "#83e2f6", fontSize: 14, fontWeight: 700,
                       }}>
-                        Begin Trial →
+                        Begin Trial <span style={{ transition: "transform 0.2s" }} className="arrow-icon">→</span>
                       </div>
                     </div>
                   </Link>
@@ -290,8 +308,8 @@ export default function HomePage() {
         {/* ══════════════════════════════════════
             FEATURES — RIGHT-biased layout
             ══════════════════════════════════════ */}
-        <section style={{ padding: "80px 80px 80px 60px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
+        <section className="container section-padding">
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }} className="mobile-stack">
 
             {/* LEFT — Feature cards */}
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -308,13 +326,12 @@ export default function HomePage() {
                     padding: "20px 22px",
                     display: "flex", gap: 18, alignItems: "flex-start",
                     animationDelay: `${i * 0.1}s`, opacity: 0,
-                    marginLeft: i % 2 === 1 ? 24 : 0,
                   }}
                 >
                   <div style={{
                     width: 44, height: 44, borderRadius: 12, flexShrink: 0,
-                    background: i % 2 === 0 ? "rgba(29,98,211,0.18)" : "rgba(251,183,36,0.12)",
-                    border: `1px solid ${i % 2 === 0 ? "rgba(59,130,246,0.3)" : "rgba(251,183,36,0.25)"}`,
+                    background: i % 2 === 0 ? "rgba(103,23,34,0.12)" : "rgba(131,226,246,0.08)",
+                    border: `1px solid ${i % 2 === 0 ? "rgba(103,23,34,0.25)" : "rgba(131,226,246,0.2)"}`,
                     display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20,
                   }}>{icon}</div>
                   <div>
@@ -326,23 +343,23 @@ export default function HomePage() {
             </div>
 
             {/* RIGHT — Title + CTA */}
-            <div style={{ textAlign: "right" }}>
+            <div className="mobile-text-center">
               <div style={{
                 display: "inline-block", padding: "4px 14px", borderRadius: 20, marginBottom: 14,
-                background: "rgba(29,98,211,0.12)", border: "1px solid rgba(59,130,246,0.3)",
-                fontSize: 11, fontWeight: 700, color: "#93C5FD", textTransform: "uppercase", letterSpacing: "0.12em",
+                background: "rgba(131,226,246,0.08)", border: "1px solid rgba(131,226,246,0.2)",
+                fontSize: 11, fontWeight: 700, color: "#83e2f6", textTransform: "uppercase", letterSpacing: "0.12em",
               }}>
                 ⚡ Odin-Approved
               </div>
-              <h2 style={{ fontSize: 36, fontWeight: 900, fontFamily: "Poppins", lineHeight: 1.2, marginBottom: 16 }}>
+              <h2 style={{ fontSize: "clamp(28px, 5vw, 36px)", fontWeight: 900, fontFamily: "Poppins", lineHeight: 1.2, marginBottom: 16 }}>
                 Built for <br />
                 <span className="gradient-text">Peak Performance</span>
               </h2>
-              <p style={{ color: "var(--text-muted)", fontSize: 15, lineHeight: 1.8, marginBottom: 32, textAlign: "right" }}>
+              <p style={{ color: "var(--text-muted)", fontSize: 15, lineHeight: 1.8, marginBottom: 32 }}>
                 Every feature is forged in Asgard to simulate real interview conditions
                 and give you the sharpest feedback loop possible.
               </p>
-              <div style={{ display: "flex", gap: 12, justifyContent: "flex-end" }}>
+              <div style={{ display: "flex", gap: 12 }} className="mobile-text-center">
                 <Link href="/auth/register" className="btn btn-primary btn-lg">
                   ⚡ Join ThorPrep
                 </Link>
@@ -354,44 +371,47 @@ export default function HomePage() {
         {/* ══════════════════════════════════════
             BOTTOM CTA — Bifrost strip
             ══════════════════════════════════════ */}
-        <section style={{ padding: "60px 80px", position: "relative", overflow: "hidden" }}>
+        <section className="container section-padding">
           <div style={{
-            borderRadius: 20, padding: "48px 56px",
-            background: "linear-gradient(135deg, rgba(29,98,211,0.18) 0%, rgba(124,58,237,0.12) 50%, rgba(251,183,36,0.1) 100%)",
-            border: "1px solid rgba(59,130,246,0.25)",
+            borderRadius: 20, padding: "48px 40px",
+            background: "linear-gradient(135deg, rgba(103,23,34,0.1) 0%, rgba(22,31,46,0.2) 100%)",
+            border: "1px solid rgba(131,226,246,0.15)",
             display: "grid", gridTemplateColumns: "1fr auto",
-            alignItems: "center", gap: 40,
+            alignItems: "center", gap: 32,
             position: "relative", overflow: "hidden",
-          }}>
+          }} className="mobile-stack mobile-text-center">
             {/* Glow orb */}
             <div style={{
               position: "absolute", right: -80, top: -80, width: 400, height: 400, borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(131,226,246,0.06) 0%, transparent 70%)",
               pointerEvents: "none",
             }} />
             <div>
-              <h2 style={{ fontSize: 28, fontWeight: 900, fontFamily: "Poppins", marginBottom: 8 }}>
+              <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: 900, fontFamily: "Poppins", marginBottom: 8 }}>
                 Ready to be <span className="gradient-text">Unstoppable</span>?
               </h2>
               <p style={{ color: "var(--text-muted)", fontSize: 15 }}>
                 Join thousands of engineers who cracked their dream job with ThorPrep.
               </p>
             </div>
-            <Link href="/auth/register" className="btn btn-gold btn-xl" style={{ whiteSpace: "nowrap" }}>
+            <Link href="/auth/register" className="btn btn-primary btn-xl" style={{ whiteSpace: "nowrap" }}>
               🚀 Open Bifrost
             </Link>
           </div>
         </section>
 
         {/* Footer */}
-        <footer style={{
-          textAlign: "center", padding: "28px 24px",
-          borderTop: "1px solid rgba(59,130,246,0.15)",
+        <footer className="container" style={{
+          textAlign: "center", padding: "40px 24px",
+          borderTop: "1px solid var(--border)",
           color: "var(--text-muted)", fontSize: 13,
         }}>
-          <span className="gradient-text" style={{ fontWeight: 800, fontSize: 16 }}>⚡ ThorPrep</span>
-          <span style={{ margin: "0 12px", opacity: 0.3 }}>|</span>
-          Forged in Asgard · Built with ⚡ · 2026
+          <div style={{ marginBottom: 12 }}>
+            <span className="gradient-text" style={{ fontWeight: 800, fontSize: 18 }}>⚡ ThorPrep</span>
+          </div>
+          <p style={{ opacity: 0.6 }}>
+            Forged in Asgard · Built with ⚡ · {new Date().getFullYear()}
+          </p>
         </footer>
       </main>
     </>
