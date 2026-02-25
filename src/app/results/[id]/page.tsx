@@ -26,7 +26,7 @@ const chartDefaults = {
   maintainAspectRatio: false,
   plugins: {
     legend: {
-      labels: { color: "#94a3b8", font: { family: "Poppins", size: 12 } },
+      labels: { color: "var(--text-muted)", font: { family: "Poppins", size: 12 } },
     },
   },
 };
@@ -183,7 +183,7 @@ export default function ResultsPage() {
         </div>
 
         {/* ── CHARTS ── */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 20 }}>
+        <div className="mobile-stack" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 20 }}>
           {/* Doughnut */}
           <div className="card" style={{ padding: 26 }}>
             <div style={{ fontWeight: 700, marginBottom: 18, fontSize: 15, fontFamily: "Poppins" }}>Score Breakdown</div>
@@ -216,10 +216,10 @@ export default function ResultsPage() {
                     scales: {
                       x: {
                         min: 0, max: 100,
-                        ticks: { callback: (v) => `${v}%`, color: "#64748b" },
-                        grid: { color: "rgba(255,255,255,0.05)" },
+                        ticks: { callback: (v) => `${v}%`, color: "var(--text-muted)" },
+                        grid: { color: "var(--border-light)" },
                       },
-                      y: { ticks: { color: "#94a3b8" }, grid: { display: false } },
+                      y: { ticks: { color: "var(--text-muted)" }, grid: { display: false } },
                     },
                   }}
                 />

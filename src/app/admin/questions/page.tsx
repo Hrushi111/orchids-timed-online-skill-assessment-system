@@ -156,11 +156,11 @@ export default function AdminQuestions() {
         </select>
       </div>
 
-      <div className="card" style={{ overflow: "hidden" }}>
+      <div className="card table-container">
         {loading ? (
-          <div style={{ padding: 32, textAlign: "center", color: "#94a3b8" }}>Loading questions…</div>
+          <div style={{ padding: 32, textAlign: "center", color: "var(--text-muted)" }}>Loading questions…</div>
         ) : questions.length === 0 ? (
-          <div style={{ padding: 32, textAlign: "center", color: "#94a3b8" }}>No questions found. Add some above or upload a CSV.</div>
+          <div style={{ padding: 32, textAlign: "center", color: "var(--text-muted)" }}>No questions found. Add some above or upload a CSV.</div>
         ) : (
           <table className="table">
             <thead>
@@ -177,14 +177,14 @@ export default function AdminQuestions() {
             <tbody>
               {questions.map((q, i) => (
                 <tr key={q.id}>
-                  <td style={{ color: "#94a3b8", fontSize: 12 }}>{page * pageSize + i + 1}</td>
+                  <td style={{ color: "var(--text-muted)", fontSize: 12 }}>{page * pageSize + i + 1}</td>
                   <td style={{ maxWidth: 320, fontWeight: 500 }}>
                     <div style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={q.question_text}>{q.question_text}</div>
                   </td>
                   <td><span className="badge badge-primary">{(q.subjects as any)?.name}</span></td>
-                  <td style={{ fontSize: 13, color: "#64748b" }}>{(q.topics as any)?.name ?? "—"}</td>
+                  <td style={{ fontSize: 13, color: "var(--text-muted)" }}>{(q.topics as any)?.name ?? "—"}</td>
                   <td><span className={`badge badge-${q.difficulty}`}>{q.difficulty}</span></td>
-                  <td style={{ fontWeight: 700, color: "#059669" }}>{q.correct_answer}</td>
+                  <td style={{ fontWeight: 700, color: "var(--success)" }}>{q.correct_answer}</td>
                   <td>
                     <div style={{ display: "flex", gap: 6 }}>
                       <button className="btn btn-sm btn-secondary" onClick={() => openEdit(q)}>Edit</button>
@@ -197,18 +197,18 @@ export default function AdminQuestions() {
           </table>
         )}
         {!loading && (
-          <div style={{ padding: "12px 20px", display: "flex", gap: 10, justifyContent: "flex-end", borderTop: "1px solid #e2e8f0" }}>
+          <div style={{ padding: "12px 20px", display: "flex", gap: 10, justifyContent: "flex-end", borderTop: "1px solid var(--border)" }}>
             <button className="btn btn-sm btn-secondary" disabled={page === 0} onClick={() => setPage(p => p - 1)}>← Prev</button>
-            <span style={{ fontSize: 13, color: "#64748b", alignSelf: "center" }}>Page {page + 1}</span>
+            <span style={{ fontSize: 13, color: "var(--text-muted)", alignSelf: "center" }}>Page {page + 1}</span>
             <button className="btn btn-sm btn-secondary" disabled={questions.length < pageSize} onClick={() => setPage(p => p + 1)}>Next →</button>
           </div>
         )}
       </div>
 
       {/* CSV format hint */}
-      <div className="card" style={{ padding: 16, marginTop: 16, background: "#f0f9ff", borderColor: "#bae6fd" }}>
-        <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 8, color: "#0369a1" }}>📄 CSV Format Guide</div>
-        <div style={{ fontSize: 13, color: "#0369a1", fontFamily: "monospace", background: "white", padding: 10, borderRadius: 6, overflowX: "auto" }}>
+      <div className="card panel-border" style={{ padding: 16, marginTop: 16 }}>
+        <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 8, color: "var(--primary)" }}>📄 CSV Format Guide</div>
+        <div style={{ fontSize: 13, color: "var(--primary)", fontFamily: "monospace", background: "var(--bg-secondary)", padding: 10, borderRadius: 6, overflowX: "auto" }}>
           subject, topic, question_text, option_a, option_b, option_c, option_d, correct_answer, difficulty<br />
           Java, OOPs, "What is polymorphism?", "Many forms", "Inheritance", "Encapsulation", "None", A, easy
         </div>

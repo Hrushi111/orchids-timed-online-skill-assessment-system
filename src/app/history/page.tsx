@@ -45,16 +45,16 @@ export default function HistoryPage() {
         </div>
 
         {/* Stats */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 24 }}>
+        <div className="mobile-stack" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 24 }}>
           {[
-            { val: totalTests, lbl: "Total Tests", color: "#4f46e5", icon: "📝" },
-            { val: `${avgAcc}%`, lbl: "Avg Accuracy", color: "#059669", icon: "🎯" },
-            { val: `${bestAcc}%`, lbl: "Best Score", color: "#d97706", icon: "🏆" },
+            { val: totalTests, lbl: "Total Tests", color: "var(--primary)", icon: "📝" },
+            { val: `${avgAcc}%`, lbl: "Avg Accuracy", color: "var(--success)", icon: "🎯" },
+            { val: `${bestAcc}%`, lbl: "Best Score", color: "var(--primary-light)", icon: "🏆" },
           ].map(s => (
-            <div key={s.lbl} className="card" style={{ padding: 20, textAlign: "center" }}>
-              <div style={{ fontSize: 24 }}>{s.icon}</div>
-              <div style={{ fontSize: 28, fontWeight: 800, color: s.color, marginTop: 4 }}>{s.val}</div>
-              <div style={{ fontSize: 13, color: "#64748b" }}>{s.lbl}</div>
+            <div key={s.lbl} className="card" style={{ padding: 16, textAlign: "center", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <div style={{ fontSize: 22 }}>{s.icon}</div>
+              <div style={{ fontSize: 24, fontWeight: 800, color: s.color, marginTop: 4 }}>{s.val}</div>
+              <div style={{ fontSize: 11, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginTop: 2 }}>{s.lbl}</div>
             </div>
           ))}
         </div>
@@ -76,7 +76,7 @@ export default function HistoryPage() {
             <Link href="/dashboard" className="btn btn-primary" style={{ marginTop: 12 }}>Take Your First Test</Link>
           </div>
         ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, overflowX: "hidden" }}>
             {filtered.map(r => {
               const acc = Number(r.accuracy);
               const color = acc >= 70 ? "#059669" : acc >= 40 ? "#d97706" : "#dc2626";
