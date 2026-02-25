@@ -150,17 +150,16 @@ export default function TakeTestPage() {
 
   const q = questions[current];
 
-  const timerColor = timeLeft <= 60 ? "#ef4444" : timeLeft <= 120 ? "#f59e0b" : "#10b981";
+  const timerColor = timeLeft <= 60 ? "var(--danger)" : timeLeft <= 120 ? "var(--warning)" : "var(--success)";
 
   return (
     <div style={{ background: "var(--bg)", minHeight: "100vh" }}>
       {/* ── Top bar ── */}
       <div style={{
-        background: "rgba(10,10,20,0.95)",
-        backdropFilter: "blur(20px)",
+        background: "var(--bg)",
         borderBottom: "1px solid var(--border)",
         padding: "0 28px",
-        height: 64,
+        height: 72,
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -170,7 +169,7 @@ export default function TakeTestPage() {
       }}>
         {/* Subject info */}
         <div>
-          <div className="nav-logo" style={{ fontSize: 16 }}>⚡ {subject?.name}</div>
+          <div style={{ fontSize: 16, fontWeight: 900, color: "var(--primary)" }}>⚡ {subject?.name}</div>
           <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 1 }}>Timed Assessment</div>
         </div>
 
@@ -180,7 +179,7 @@ export default function TakeTestPage() {
           <div style={{ textAlign: "center" }}>
             <div style={{ fontSize: 11, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.07em" }}>Answered</div>
             <div style={{ fontWeight: 700, fontSize: 16, fontFamily: "Poppins" }}>
-              <span style={{ color: "#10b981" }}>{answered}</span>
+              <span style={{ color: "var(--success)" }}>{answered}</span>
               <span style={{ color: "var(--text-muted)" }}>/{questions.length}</span>
             </div>
           </div>
@@ -232,8 +231,8 @@ export default function TakeTestPage() {
       {timeLeft <= 120 && !submittedRef.current && (
         <div className="alert" style={{
           borderRadius: 0, margin: 0, textAlign: "center", justifyContent: "center",
-          background: timeLeft <= 60 ? "rgba(239,68,68,0.15)" : "rgba(245,158,11,0.12)",
-          color: timeLeft <= 60 ? "#f87171" : "#fbbf24",
+          background: timeLeft <= 60 ? "rgba(139,0,0,0.08)" : "rgba(196,134,10,0.08)",
+          color: timeLeft <= 60 ? "var(--danger)" : "var(--warning)",
           border: "none",
           borderBottom: `1px solid ${timeLeft <= 60 ? "rgba(239,68,68,0.3)" : "rgba(245,158,11,0.25)"}`,
         }}>

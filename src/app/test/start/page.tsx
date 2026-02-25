@@ -54,10 +54,10 @@ export default function TestStartPage() {
   );
 
   const difficultyInfo: Record<string, { label: string; color: string; desc: string }> = {
-    mixed: { label: "Mixed", color: "#6366f1", desc: "Best for overall practice" },
-    easy: { label: "Easy", color: "#10b981", desc: "Build confidence first" },
-    medium: { label: "Medium", color: "#f59e0b", desc: "Standard interview level" },
-    hard: { label: "Hard", color: "#ef4444", desc: "Challenge yourself" },
+    mixed: { label: "Mixed", color: "#7A8060", desc: "Best for overall practice" },
+    easy: { label: "Easy", color: "#2D7A4F", desc: "Build confidence first" },
+    medium: { label: "Medium", color: "#C4860A", desc: "Standard interview level" },
+    hard: { label: "Hard", color: "#8B0000", desc: "Challenge yourself" },
   };
 
   return (
@@ -74,7 +74,7 @@ export default function TestStartPage() {
         <div style={{
           position: "fixed", top: "30%", left: "50%", transform: "translateX(-50%)",
           width: 500, height: 400, borderRadius: "50%",
-          background: "radial-gradient(ellipse, rgba(99,102,241,0.12) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse, rgba(174,183,179,0.1) 0%, transparent 70%)",
           pointerEvents: "none",
         }} />
 
@@ -95,8 +95,8 @@ export default function TestStartPage() {
           <div style={{ textAlign: "center", marginBottom: 32 }}>
             <div style={{
               width: 72, height: 72, borderRadius: 20, margin: "0 auto 16px",
-              background: "linear-gradient(135deg, rgba(99,102,241,0.3), rgba(6,182,212,0.2))",
-              border: "1px solid rgba(99,102,241,0.3)",
+              background: "#F0EEE0",
+              border: "1px solid var(--border)",
               display: "flex", alignItems: "center", justifyContent: "center",
               fontSize: 36,
               animation: "float 3s ease-in-out infinite",

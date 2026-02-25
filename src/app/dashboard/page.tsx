@@ -9,15 +9,15 @@ const SUBJECT_ICONS: Record<string, string> = {
   Java: "☕", SQL: "🗄️", Angular: "🔺", Aptitude: "🧠",
   "Web Development": "🌐", Python: "🐍", default: "📚"
 };
-// Iron Man themed subject colors
+// Olive themed subject colors
 const SUBJECT_COLORS: Record<string, string> = {
-  Java: "linear-gradient(135deg,#cc1f1f,#8b0000)",
-  SQL: "linear-gradient(135deg,#f0a500,#c47d00)",
-  Angular: "linear-gradient(135deg,#dc2626,#991b1b)",
-  Aptitude: "linear-gradient(135deg,#b45309,#78350f)",
-  "Web Development": "linear-gradient(135deg,#c47d00,#92400e)",
-  Python: "linear-gradient(135deg,#9a1515,#7f1d1d)",
-  default: "linear-gradient(135deg,#8b0000,#4a0000)"
+  Java: "#3D550C",
+  SQL: "#4B5320",
+  Angular: "#606C38",
+  Aptitude: "#3D550C",
+  "Web Development": "#4B5320",
+  Python: "#606C38",
+  default: "#3D550C"
 };
 
 function Sidebar() {
@@ -35,7 +35,7 @@ function Sidebar() {
     <aside className="sidebar slide-in-left" style={{ display: "flex", flexDirection: "column" }}>
       {/* Logo */}
       <div style={{ padding: "8px 22px 20px" }}>
-        <Link href="/" className="nav-logo" style={{ fontSize: 18 }}>🔴 IronPrep</Link>
+        <Link href="/" style={{ fontSize: 18, fontWeight: 900, textDecoration: "none", color: "var(--primary)" }}>⚡ ThorPrep</Link>
       </div>
 
       <div className="sidebar-section">Navigation</div>
@@ -111,25 +111,27 @@ export default function Dashboard() {
         <div style={{
           position: "relative", overflow: "hidden",
           borderRadius: 20, padding: "30px 36px", marginBottom: 32,
-          background: "linear-gradient(135deg, rgba(204,31,31,0.18) 0%, rgba(240,165,0,0.08) 100%)",
-          border: "1px solid rgba(204,31,31,0.3)",
+          background: "var(--primary)",
+          color: "white",
+          border: "1px solid var(--primary-dark)",
+          boxShadow: "var(--shadow-md)"
         }}>
           {/* Background decoration */}
           <div style={{
             position: "absolute", right: -40, top: -40,
             width: 180, height: 180, borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 70%)",
+            background: "rgba(255,255,255,0.1)",
             pointerEvents: "none",
           }} />
           <div style={{ position: "relative", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 20 }}>
             <div>
-              <div style={{ fontSize: 13, color: "var(--gold-light)", fontWeight: 700, marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.1em" }}>
-                🔴 Welcome back
+              <div style={{ fontSize: 13, color: "#E8E6D8", fontWeight: 700, marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.1em" }}>
+                🌿 Welcome back
               </div>
               <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 6, fontFamily: "Poppins" }}>
                 {profile?.name?.split(" ")[0]} 👋
               </h1>
-              <p style={{ color: "var(--text-secondary)", fontSize: 14 }}>
+              <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 14 }}>
                 Ready to practice today? Pick a subject and start your timed test.
               </p>
             </div>
