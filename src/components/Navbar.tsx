@@ -132,7 +132,7 @@ export default function Navbar() {
                 minWidth: 220, zIndex: 9999,
                 overflow: "hidden",
               }}>
-                <div style={{ padding: "16px 18px", borderBottom: "1px solid var(--border-light)", background: "#F9F7E8" }}>
+                <div style={{ padding: "16px 18px", borderBottom: "1px solid var(--border)", background: "var(--bg-secondary)" }}>
                   <div style={{ fontWeight: 700, fontSize: 14, color: "var(--text)" }}>{profile?.name}</div>
                   <div style={{ fontSize: 12, color: "var(--text-muted)" }}>{profile?.email}</div>
                 </div>

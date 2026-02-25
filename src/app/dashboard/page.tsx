@@ -101,7 +101,7 @@ export default function Dashboard() {
     acc >= 70 ? "#10b981" : acc >= 40 ? "#f59e0b" : "#ef4444";
 
   return (
-    <div style={{ display: "flex", minHeight: "calc(100vh - 68px)" }}>
+    <div style={{ display: "flex", minHeight: "calc(100vh - var(--navbar-h))", paddingTop: "var(--navbar-h)" }}>
       <Sidebar />
 
       {/* Main Content */}

@@ -26,8 +26,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <>
       <Navbar />
-      <div style={{ display: "flex" }}>
-        <aside className="sidebar">
+      <div style={{ display: "flex", paddingTop: "var(--navbar-h)", minHeight: "100vh" }}>
+        <aside className="sidebar" style={{ height: "calc(100vh - var(--navbar-h))", top: "var(--navbar-h)" }}>
           <div className="sidebar-section">Admin Panel</div>
           {navItems.map(item => {
             const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
@@ -37,11 +37,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </Link>
             );
           })}
-          <div style={{ borderTop: "1px solid #e2e8f0", marginTop: 12, paddingTop: 12 }}>
+          <div style={{ borderTop: "1px solid var(--border)", marginTop: 12, paddingTop: 12 }}>
             <Link href="/dashboard" className="sidebar-item">⬅ User Dashboard</Link>
           </div>
         </aside>
-        <main style={{ flex: 1, padding: 28, minHeight: "calc(100vh - 64px)", overflow: "auto" }}>
+        <main style={{ flex: 1, padding: 28, height: "calc(100vh - var(--navbar-h))", overflow: "auto" }}>
           {children}
         </main>
       </div>

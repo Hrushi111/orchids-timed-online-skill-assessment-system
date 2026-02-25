@@ -38,7 +38,7 @@ export default function HistoryPage() {
   return (
     <>
       <Navbar />
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "28px 24px" }} className="fade-in">
+      <div style={{ maxWidth: 900, margin: "0 auto", padding: "28px 24px", paddingTop: "var(--navbar-h)" }} className="fade-in">
         <div className="page-header">
           <h1 className="page-title">Test History</h1>
           <p className="page-subtitle">Review all your past tests and track your progress over time</p>

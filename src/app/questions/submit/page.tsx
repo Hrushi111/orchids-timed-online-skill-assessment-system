@@ -153,20 +153,19 @@ export default function DumpQuestionsPage() {
     return (
         <>
             <Navbar />
-            <div style={{ minHeight: "calc(100vh - 68px)", padding: "36px 24px", maxWidth: 820, margin: "0 auto" }}>
+            <div style={{ minHeight: "calc(100vh - var(--navbar-h))", paddingTop: "var(--navbar-h)", paddingBottom: 40, paddingLeft: 24, paddingRight: 24, maxWidth: 820, margin: "0 auto" }}>
 
                 {/* ── HERO HEADER ── */}
-                <div className="fade-in" style={{ marginBottom: 32 }}>
+                <div className="fade-in" style={{ marginBottom: 32, marginTop: 32 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 8 }}>
                         <div style={{
                             width: 52, height: 52, borderRadius: 14, flexShrink: 0,
-                            background: "linear-gradient(135deg, #cc1f1f, #8b0000)",
+                            background: "var(--primary)",
                             display: "flex", alignItems: "center", justifyContent: "center",
-                            fontSize: 26, boxShadow: "0 4px 20px rgba(204,31,31,0.5)",
-                            animation: "arcReactorPulse 3s ease-in-out infinite",
+                            fontSize: 26, boxShadow: "var(--shadow-md)",
                         }}>📤</div>
                         <div>
-                            <h1 className="gradient-text" style={{ fontSize: 28, fontWeight: 900 }}>
+                            <h1 style={{ fontSize: 28, fontWeight: 900, color: "var(--primary)" }}>
                                 Dump Your Questions
                             </h1>
                             <p style={{ color: "var(--text-muted)", fontSize: 14, marginTop: 2 }}>
@@ -179,8 +178,8 @@ export default function DumpQuestionsPage() {
                     <div style={{
                         display: "flex", gap: 16, marginTop: 20,
                         padding: "16px 20px",
-                        background: "rgba(15,5,5,0.6)",
-                        border: "1px solid rgba(204,31,31,0.2)",
+                        background: "var(--bg-secondary)",
+                        border: "1px solid var(--border)",
                         borderRadius: 12, flexWrap: "wrap",
                     }}>
                         {[
@@ -191,10 +190,10 @@ export default function DumpQuestionsPage() {
                             <div key={lbl} style={{ display: "flex", alignItems: "center", gap: 10 }}>
                                 <span style={{ fontSize: 20 }}>{icon}</span>
                                 <div>
-                                    <div style={{ fontWeight: 800, fontSize: 18, fontFamily: "Poppins", color: "var(--gold-light)" }}>{val}</div>
+                                    <div style={{ fontWeight: 800, fontSize: 18, fontFamily: "Poppins", color: "var(--primary)" }}>{val}</div>
                                     <div style={{ fontSize: 11, color: "var(--text-muted)" }}>{lbl}</div>
                                 </div>
-                                <div style={{ width: 1, height: 30, background: "rgba(204,31,31,0.2)", margin: "0 8px" }} />
+                                <div style={{ width: 1, height: 30, background: "var(--border)", margin: "0 8px" }} />
                             </div>
                         ))}
                     </div>
@@ -212,10 +211,10 @@ export default function DumpQuestionsPage() {
                                 fontFamily: "Poppins", fontWeight: 700, fontSize: 14,
                                 transition: "all 0.2s",
                                 background: mode === m
-                                    ? "linear-gradient(135deg, #cc1f1f, #8b0000)"
+                                    ? "var(--primary)"
                                     : "transparent",
                                 color: mode === m ? "#fff" : "var(--text-muted)",
-                                boxShadow: mode === m ? "0 4px 18px rgba(204,31,31,0.4)" : "none",
+                                boxShadow: mode === m ? "var(--shadow-md)" : "none",
                             }}
                         >
                             {m === "single" ? "⚡ Single Question" : "📦 Bulk CSV Upload"}
@@ -245,13 +244,13 @@ export default function DumpQuestionsPage() {
                             {/* Line behind steps */}
                             <div style={{
                                 position: "absolute", top: 16, left: 0, right: 0, height: 2,
-                                background: "rgba(204,31,31,0.1)",
+                                background: "var(--border-light)",
                                 zIndex: 0,
                             }} />
                             <div style={{
                                 position: "absolute", top: 16, left: 0, height: 2,
                                 width: `${((step - 1) / 3) * 100}%`,
-                                background: "linear-gradient(90deg, #cc1f1f, #f0a500)",
+                                background: "var(--primary)",
                                 transition: "width 0.4s ease",
                                 zIndex: 0,
                             }} />
@@ -263,16 +262,16 @@ export default function DumpQuestionsPage() {
                                     <div key={lbl} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 6, position: "relative", zIndex: 1 }}>
                                         <div style={{
                                             width: 32, height: 32, borderRadius: "50%",
-                                            background: done ? "linear-gradient(135deg, #22c55e, #16a34a)" : cur ? "linear-gradient(135deg, #cc1f1f, #8b0000)" : "rgba(255,255,255,0.06)",
-                                            border: done || cur ? "none" : "1px solid rgba(204,31,31,0.3)",
+                                            background: done ? "var(--success)" : cur ? "var(--primary)" : "var(--bg-secondary)",
+                                            border: done || cur ? "none" : "1px solid var(--border)",
                                             display: "flex", alignItems: "center", justifyContent: "center",
                                             fontWeight: 800, fontSize: 13, color: "white",
                                             transition: "all 0.3s",
-                                            boxShadow: cur ? "0 0 16px rgba(204,31,31,0.5)" : "none",
+                                            boxShadow: cur ? "var(--shadow-md)" : "none",
                                         }}>
                                             {done ? "✓" : n}
                                         </div>
-                                        <span style={{ fontSize: 11, fontWeight: cur ? 700 : 500, color: cur ? "var(--gold-light)" : "var(--text-muted)" }}>
+                                        <span style={{ fontSize: 11, fontWeight: cur ? 700 : 500, color: cur ? "var(--primary)" : "var(--text-muted)" }}>
                                             {lbl}
                                         </span>
                                     </div>
@@ -319,8 +318,8 @@ export default function DumpQuestionsPage() {
                                                     onClick={() => setForm(p => ({ ...p, difficulty: val }))}
                                                     style={{
                                                         flex: 1, padding: "14px 10px", borderRadius: 10, cursor: "pointer",
-                                                        border: `1.5px solid ${form.difficulty === val ? color : "rgba(204,31,31,0.2)"}`,
-                                                        background: form.difficulty === val ? `${color}18` : "rgba(255,255,255,0.02)",
+                                                        border: `1.5px solid ${form.difficulty === val ? color : "var(--border)"}`,
+                                                        background: form.difficulty === val ? `${color}18` : "var(--bg-secondary)",
                                                         color: form.difficulty === val ? color : "var(--text-muted)",
                                                         transition: "all 0.2s",
                                                         fontFamily: "Poppins",
@@ -360,8 +359,8 @@ export default function DumpQuestionsPage() {
                                 </div>
 
                                 {/* Tips */}
-                                <div style={{ padding: "12px 16px", borderRadius: 10, background: "rgba(240,165,0,0.06)", border: "1px solid rgba(240,165,0,0.2)", fontSize: 13, color: "var(--text-muted)" }}>
-                                    <strong style={{ color: "var(--gold-light)" }}>💡 Tips for good questions:</strong>
+                                <div style={{ padding: "12px 16px", borderRadius: 10, background: "var(--bg-secondary)", border: "1px solid var(--border)", fontSize: 13, color: "var(--text-muted)" }}>
+                                    <strong style={{ color: "var(--primary)" }}>💡 Tips for good questions:</strong>
                                     <ul style={{ marginTop: 6, paddingLeft: 18, lineHeight: 2 }}>
                                         <li>Start with "What", "Which", "How", or "Why"</li>
                                         <li>Keep it under 2 sentences</li>
@@ -406,8 +405,8 @@ export default function DumpQuestionsPage() {
                                                         onClick={() => setForm(p => ({ ...p, correct_answer: opt }))}
                                                         style={{
                                                             position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)",
-                                                            background: isCorrect ? "#22c55e" : "rgba(255,255,255,0.07)",
-                                                            border: `1.5px solid ${isCorrect ? "#22c55e" : "rgba(255,255,255,0.1)"}`,
+                                                            background: isCorrect ? "var(--success)" : "var(--bg-secondary)",
+                                                            border: `1.5px solid ${isCorrect ? "var(--success)" : "var(--border-light)"}`,
                                                             borderRadius: 6, width: 26, height: 26,
                                                             cursor: "pointer", fontSize: 12, color: isCorrect ? "white" : "var(--text-muted)",
                                                             display: "flex", alignItems: "center", justifyContent: "center",
@@ -432,7 +431,7 @@ export default function DumpQuestionsPage() {
                                     Step 4 — Review & Submit
                                 </h2>
 
-                                <div style={{ padding: "20px 22px", borderRadius: 14, background: "rgba(15,5,5,0.7)", border: "1px solid rgba(240,165,0,0.2)", marginBottom: 24 }}>
+                                <div style={{ padding: "20px 22px", borderRadius: 14, background: "var(--bg-secondary)", border: "1px solid var(--border)", marginBottom: 24 }}>
                                     <div style={{ display: "flex", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
                                         <span className="badge badge-primary">{subjects.find(s => s.id === form.subject_id)?.name}</span>
                                         {form.topic_id && <span className="badge badge-secondary">{topics.find(t => t.id === form.topic_id)?.name}</span>}
@@ -451,8 +450,8 @@ export default function DumpQuestionsPage() {
                                                 <div key={opt} style={{
                                                     display: "flex", gap: 12, alignItems: "center",
                                                     padding: "10px 14px", borderRadius: 8,
-                                                    background: isCorrect ? "rgba(34,197,94,0.1)" : "rgba(255,255,255,0.03)",
-                                                    border: `1px solid ${isCorrect ? "rgba(34,197,94,0.35)" : "rgba(204,31,31,0.1)"}`,
+                                                    background: isCorrect ? "var(--success)18" : "var(--bg-card)",
+                                                    border: `1px solid ${isCorrect ? "var(--success)44" : "var(--border-light)"}`,
                                                 }}>
                                                     <span style={{
                                                         width: 24, height: 24, borderRadius: "50%",
@@ -554,8 +553,8 @@ export default function DumpQuestionsPage() {
                             <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 16, fontFamily: "Poppins" }}>
                                 📄 CSV Format Guide
                             </div>
-                            <div style={{ background: "rgba(0,0,0,0.4)", borderRadius: 10, padding: "16px 18px", overflowX: "auto", border: "1px solid rgba(240,165,0,0.15)" }}>
-                                <code style={{ fontFamily: "monospace", fontSize: 13, color: "var(--gold-light)", lineHeight: 2, display: "block" }}>
+                            <div style={{ background: "var(--bg)", borderRadius: 10, padding: "16px 18px", overflowX: "auto", border: "1px solid var(--border)" }}>
+                                <code style={{ fontFamily: "monospace", fontSize: 13, color: "var(--primary)", lineHeight: 2, display: "block" }}>
                                     subject, topic, question_text, option_a, option_b, option_c, option_d, correct_answer, difficulty<br />
                                     <span style={{ color: "var(--text-secondary)" }}>
                                         Java, OOPs, "What is polymorphism?", "Many forms", "Inheritance", "Encapsulation", "None", A, easy<br />
@@ -571,8 +570,8 @@ export default function DumpQuestionsPage() {
                                     { col: "correct_answer", desc: 'Must be A, B, C, or D (uppercase).' },
                                     { col: "difficulty", desc: "Must be: easy, medium, or hard (lowercase)." },
                                 ].map(({ col, desc }) => (
-                                    <div key={col} style={{ padding: "10px 14px", borderRadius: 8, background: "rgba(204,31,31,0.06)", border: "1px solid rgba(204,31,31,0.15)", fontSize: 13 }}>
-                                        <code style={{ color: "var(--gold-light)", fontWeight: 700 }}>{col}</code>
+                                    <div key={col} style={{ padding: "10px 14px", borderRadius: 8, background: "var(--bg-secondary)", border: "1px solid var(--border)", fontSize: 13 }}>
+                                        <code style={{ color: "var(--primary)", fontWeight: 700 }}>{col}</code>
                                         <div style={{ color: "var(--text-muted)", marginTop: 3 }}>{desc}</div>
                                     </div>
                                 ))}
@@ -582,7 +581,7 @@ export default function DumpQuestionsPage() {
                         {/* Preview table */}
                         {preview.length > 0 && (
                             <div className="card" style={{ overflow: "hidden" }}>
-                                <div style={{ padding: "14px 20px", borderBottom: "1px solid rgba(204,31,31,0.2)", fontWeight: 700, fontFamily: "Poppins", fontSize: 14 }}>
+                                <div style={{ padding: "14px 20px", borderBottom: "1px solid var(--border)", fontWeight: 700, fontFamily: "Poppins", fontSize: 14 }}>
                                     Preview (first {preview.length} rows)
                                 </div>
                                 <div style={{ overflowX: "auto" }}>
@@ -619,8 +618,8 @@ export default function DumpQuestionsPage() {
                             <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                                 {subjects.map(s => (
                                     <code key={s.id} style={{
-                                        background: "rgba(204,31,31,0.1)", color: "var(--gold-light)",
-                                        border: "1px solid rgba(204,31,31,0.25)",
+                                        background: "var(--bg-secondary)", color: "var(--primary)",
+                                        border: "1px solid var(--border)",
                                         padding: "5px 12px", borderRadius: 6, fontSize: 13,
                                         fontFamily: "monospace",
                                     }}>
