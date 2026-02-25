@@ -140,7 +140,7 @@ export default function AdminSubjects() {
                   </div>
                 </div>
                 {isExpanded && (
-                  <div style={{ borderTop: "1px solid #e2e8f0", padding: "16px 20px" }}>
+                  <div style={{ borderTop: "1px solid var(--border)", padding: "16px 20px" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
                       <div style={{ fontWeight: 600, fontSize: 14 }}>Topics ({subTopics.length})</div>
                       <button className="btn btn-sm btn-primary" onClick={() => openAddTopic(s.id)}>+ Add Topic</button>
@@ -150,7 +150,7 @@ export default function AdminSubjects() {
                     ) : (
                       <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                         {subTopics.map(t => (
-                          <div key={t.id} style={{ display: "flex", alignItems: "center", gap: 6, background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: 8, padding: "6px 12px" }}>
+                          <div key={t.id} style={{ display: "flex", alignItems: "center", gap: 6, background: "var(--bg-secondary)", border: "1px solid var(--border)", borderRadius: 8, padding: "6px 12px" }}>
                             <span style={{ fontSize: 14 }}>{t.name}</span>
                             <button style={{ background: "none", border: "none", cursor: "pointer", color: "#94a3b8", fontSize: 12 }} onClick={() => openEditTopic(t)}>✏️</button>
                             <button style={{ background: "none", border: "none", cursor: "pointer", color: "#ef4444", fontSize: 12 }} onClick={() => deleteTopic(t.id)}>✕</button>

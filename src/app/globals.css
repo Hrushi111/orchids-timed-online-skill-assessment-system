@@ -968,13 +968,13 @@ a {
 }
 
 .sidebar-item:hover {
-  background: #E8E6D8;
+  background: var(--bg-card);
   color: var(--primary);
   border-left-color: var(--primary);
 }
 
 .sidebar-item.active {
-  background: #F0EEE0;
+  background: var(--bg-card);
   color: var(--primary);
   border-left-color: var(--primary);
   font-weight: 700;
@@ -1056,8 +1056,21 @@ a {
 }
 
 .select option {
-  background: #1C2840;
+  background: var(--bg-card);
   color: var(--text);
+}
+
+.dropdown-item {
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: var(--bg-secondary);
+  color: var(--primary) !important;
+}
+
+.dropdown-item-danger:hover {
+  background: rgba(239, 68, 68, 0.08);
 }
 
 .label {

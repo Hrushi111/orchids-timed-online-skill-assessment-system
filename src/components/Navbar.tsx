@@ -141,6 +141,7 @@ export default function Navbar() {
                     key={item.href}
                     href={item.href}
                     onClick={() => setMenuOpen(false)}
+                    className="dropdown-item"
                     style={{
                       display: "flex", alignItems: "center", gap: 10,
                       padding: "12px 18px", fontSize: 14,
@@ -152,10 +153,11 @@ export default function Navbar() {
                 ))}
                 <button
                   onClick={() => { signOut(); setMenuOpen(false); }}
+                  className="dropdown-item-danger"
                   style={{
                     display: "flex", alignItems: "center", gap: 10, width: "100%",
                     textAlign: "left", padding: "12px 18px", fontSize: 14,
-                    color: "var(--danger)", background: "none", border: "none", borderTop: "1px solid var(--border-light)",
+                    color: "var(--danger)", background: "none", border: "none", borderTop: "1px solid var(--border)",
                     cursor: "pointer",
                   }}
                 >
